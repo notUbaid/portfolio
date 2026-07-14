@@ -56,28 +56,6 @@
   color: var(--fg);
 }
 
-/* Secret talent row */
-.secretCategory {
-  border-bottom: none;
-  margin-top: var(--space-sm);
-}
-
-.secretCategory .categoryLabel {
-  color: var(--fg-subtle);
-  font-style: italic;
-}
-
-.secretItem {
-  background: var(--accent-2-dim);
-  border-color: transparent;
-  color: var(--accent-2);
-  font-style: italic;
-}
-
-.secretItem:hover {
-  border-color: var(--accent-2);
-  color: var(--accent-2);
-}
 
 @media (max-width: 768px) {
   .category {

@@ -19,12 +19,10 @@ export default function Skills() {
         </motion.h2>
 
         <div className={styles.categories}>
-          {skills.categories.map((cat, i) => {
-            const isSecret = cat.label.toLowerCase().includes("secret");
-            return (
+          {skills.categories.map((cat, i) => (
               <motion.div
                 key={cat.label}
-                className={`${styles.category} ${isSecret ? styles.secretCategory : ""}`}
+                className={styles.category}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: i * 0.06 }}
@@ -35,15 +33,14 @@ export default function Skills() {
                   {cat.items.map((item) => (
                     <motion.span
                       key={item}
-                      className={`${styles.skillItem} ${isSecret ? styles.secretItem : ""}`}
+                      className={styles.skillItem}
                     >
                       {item}
                     </motion.span>
                   ))}
                 </div>
               </motion.div>
-            );
-          })}
+            ))}
         </div>
       </div>
     </section>

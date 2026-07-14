@@ -35,9 +35,14 @@
   border-color: var(--fg-subtle);
 }
 
-.emoji {
-  font-size: 3rem;
-  line-height: 1;
+.iconWrapper {
+  margin-bottom: var(--space-xs);
+  display: flex;
+  justify-content: center;
+}
+
+.icon {
+  color: var(--accent);
 }
 
 .trophyContent {
@@ -106,8 +111,9 @@
     align-items: center;
   }
 
-  .emoji {
-    font-size: 2.5rem;
+  .iconWrapper {
+    margin-bottom: 0;
+    margin-right: var(--space-sm);
     flex-shrink: 0;
   }
 }

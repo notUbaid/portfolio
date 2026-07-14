@@ -1,8 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Medal, Award, Trophy } from "lucide-react";
 import styles from "./Achievements.module.css";
 import { achievements } from "@/data/content";
+
+const iconMap = {
+  Medal: <Medal size={48} className={styles.icon} strokeWidth={1.5} />,
+  Award: <Award size={48} className={styles.icon} strokeWidth={1.5} />,
+  Trophy: <Trophy size={48} className={styles.icon} strokeWidth={1.5} />,
+};
 
 export default function Achievements() {
   return (
@@ -38,7 +45,9 @@ export default function Achievements() {
               transition={{ duration: 0.4, delay: i * 0.12 }}
               viewport={{ once: true, margin: "-60px" }}
             >
-              <span className={styles.emoji}>{item.emoji}</span>
+              <div className={styles.iconWrapper}>
+                {iconMap[item.icon] || <Award size={48} className={styles.icon} strokeWidth={1.5} />}
+              </div>
               <div className={styles.trophyContent}>
                 <h3 className={styles.trophyTitle}>{item.title}</h3>
                 <p className={styles.trophyEvent}>{item.event}</p>
@@ -61,20 +70,22 @@ export default function Achievements() {
           {achievements.footnote}
         </motion.p>
 
-        <div className={styles.extras}>
-          {achievements.extras.map((extra, i) => (
-            <motion.p
-              key={i}
-              className={styles.extra}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
-              viewport={{ once: true }}
-            >
-              → {extra}
-            </motion.p>
-          ))}
-        </div>
+        {achievements.extras && achievements.extras.length > 0 && (
+          <div className={styles.extras}>
+            {achievements.extras.map((extra, i) => (
+              <motion.p
+                key={i}
+                className={styles.extra}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
+                viewport={{ once: true }}
+              >
+                → {extra}
+              </motion.p>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
