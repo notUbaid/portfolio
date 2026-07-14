@@ -1,0 +1,91 @@
+.skills {
+  border-top: 1px solid var(--border);
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.category {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border);
+}
+
+.category:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.categoryLabel {
+  font-family: var(--font-heading);
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--accent);
+  text-transform: lowercase;
+  min-width: 240px;
+  flex-shrink: 0;
+  line-height: 1.4;
+}
+
+.categoryItems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillItem {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  cursor: default;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.skillItem:hover {
+  border-color: var(--fg-subtle);
+  color: var(--fg);
+}
+
+/* Secret talent row */
+.secretCategory {
+  border-bottom: none;
+  margin-top: var(--space-sm);
+}
+
+.secretCategory .categoryLabel {
+  color: var(--fg-subtle);
+  font-style: italic;
+}
+
+.secretItem {
+  background: var(--accent-2-dim);
+  border-color: transparent;
+  color: var(--accent-2);
+  font-style: italic;
+}
+
+.secretItem:hover {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+}
+
+@media (max-width: 768px) {
+  .category {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .categoryLabel {
+    min-width: unset;
+  }
+}

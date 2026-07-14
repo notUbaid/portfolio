@@ -1,0 +1,21 @@
+.about {
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+.content {
+  max-width: 780px;
+}
+
+.paragraph {
+  font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+  color: var(--fg);
+  line-height: 1.85;
+  margin-bottom: var(--space-md);
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
+  color: var(--fg-muted);
+  font-style: italic;
+}
