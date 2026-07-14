@@ -1,5 +1,23 @@
 .skills {
+  position: relative;
   border-top: 1px solid var(--border);
+  z-index: 1;
+  overflow: hidden;
+}
+
+.skills::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url('/actually.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(2px) grayscale(100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 95%);
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 95%);
 }
 
 .categories {
@@ -24,7 +42,7 @@
 .categoryLabel {
   font-family: var(--font-heading);
   font-size: clamp(0.85rem, 1.5vw, 1rem);
-  color: var(--accent);
+  color: var(--fg);
   text-transform: lowercase;
   min-width: 240px;
   flex-shrink: 0;
@@ -38,6 +56,7 @@
 }
 
 .skillItem {
+  position: relative;
   font-family: var(--font-body);
   font-size: 0.88rem;
   color: var(--fg);
@@ -48,12 +67,58 @@
   cursor: default;
   transition:
     border-color var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
     color var(--transition-fast);
 }
 
-.skillItem:hover {
-  border-color: var(--fg-subtle);
-  color: var(--fg);
+.skillItem:hover, .skillItem.fallen {
+  border-color: #888;
+  background-color: #1a1a1a;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E");
+  color: transparent;
+  border-style: dashed;
+}
+
+.skillItem:hover:not(.fallen) {
+  transform: translateY(-4px) !important;
+  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.6);
+}
+
+.skillItem:hover::after, .skillItem.fallen::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f5f5f1;
+  font-family: var(--font-sketch-body);
+  font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+  white-space: nowrap;
+}
+
+.skillPillContainer {
+  position: relative;
+  display: inline-flex;
+}
+
+.wittyText {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-family: var(--font-sketch-body);
+  font-size: 0.85rem;
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 

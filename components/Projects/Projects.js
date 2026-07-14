@@ -8,6 +8,7 @@ import ProjectCard from "./ProjectCard";
 export default function Projects() {
   return (
     <section className={styles.projects} id="projects">
+      <img src="/ship.webp" className={styles.sectionBg} alt="" />
       <div className="section">
         <motion.h2
           className="section-heading"
@@ -16,7 +17,7 @@ export default function Projects() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          {projects.heading}
+          things i&apos;ve <span style={{ color: "var(--accent)" }}>shipped</span>
         </motion.h2>
 
         <div className={styles.grid}>

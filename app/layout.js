@@ -1,4 +1,5 @@
-import { Inter, Space_Mono } from "next/font/google";
+import { Inter, Space_Mono, Caveat } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,6 +12,24 @@ const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ["400", "700"],
   variable: "--font-space-mono",
+  display: "swap",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-sketch",
+  display: "swap",
+});
+
+const handmadeAlphabet = localFont({
+  src: "../public/fonts/HandmadeAlphabet.otf",
+  variable: "--font-handmade",
+  display: "swap",
+});
+
+const amanojaku = localFont({
+  src: "../public/fonts/Amanojaku.otf",
+  variable: "--font-amanojaku",
   display: "swap",
 });
 
@@ -44,7 +63,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${spaceMono.variable} ${caveat.variable} ${handmadeAlphabet.variable} ${amanojaku.variable}`}>
       <body>{children}</body>
     </html>
   );

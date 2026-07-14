@@ -8,6 +8,7 @@ import { clientWork } from "@/data/content";
 export default function ClientWork() {
   return (
     <section className={styles.clientWork} id="client-work">
+      <img src="/paid.jpg" className={styles.sectionBg} alt="" />
       <div className="section">
         <motion.h2
           className="section-heading"
@@ -16,7 +17,7 @@ export default function ClientWork() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          {clientWork.heading}
+          stuff clients <span style={{ color: "var(--accent)" }}>paid</span> me for
         </motion.h2>
 
         <motion.p
@@ -31,36 +32,59 @@ export default function ClientWork() {
 
         <div className={styles.grid}>
           {clientWork.items.map((item, i) => (
-            <motion.a
-              key={item.name}
-              href={item.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.card}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.12 }}
-              viewport={{ once: true, margin: "-60px" }}
-              whileHover={{ y: -4 }}
-            >
-              <div className={styles.cardTop}>
-                <span className={styles.clientLabel}>Client Work</span>
-                <ExternalLink size={16} className={styles.linkIcon} />
-              </div>
-              <h3 className={styles.cardTitle}>{item.name}</h3>
-              <p className={styles.cardTagline}>{item.tagline}</p>
-              <p className={styles.cardDescription}>{item.description}</p>
-              <div className={styles.cardTech}>
-                {item.tech.map((t) => (
-                  <span key={t} className={styles.techTag}>
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </motion.a>
+            <ClientCard key={item.name} item={item} i={i} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+import { useMouseReveal } from "@/hooks/useMouseReveal";
+
+function ClientCard({ item, i }) {
+  const { ref } = useMouseReveal();
+
+  const content = (
+    <>
+      <div className={styles.cardTop}>
+        <span className={styles.clientLabel}>Client Work</span>
+        <ExternalLink size={16} className={styles.linkIcon} />
+      </div>
+      <h3 className={styles.cardTitle}>{item.name}</h3>
+      <p className={styles.cardTagline}>{item.tagline}</p>
+      <p className={styles.cardDescription}>{item.description}</p>
+      <div className={styles.cardTech}>
+        {item.tech.map((t) => (
+          <span key={t} className={styles.techTag}>
+            {t}
+          </span>
+        ))}
+      </div>
+    </>
+  );
+
+  return (
+    <div className={styles.cardWrapper}>
+      <motion.a
+        href={item.live}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.card}
+        ref={ref}
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: i * 0.12 }}
+        viewport={{ once: true, margin: "-60px" }}
+      >
+        <div className={styles.normalLayer}>{content}</div>
+        <div
+          className={styles.blackboardLayer}
+          aria-hidden="true"
+        >
+          {content}
+        </div>
+      </motion.a>
+    </div>
   );
 }

@@ -15,41 +15,60 @@ export default function Experience() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          {experience.heading}
+          the <span style={{ color: "var(--accent)" }}>résumé</span> larp
         </motion.h2>
 
         <div className={styles.timeline}>
           {experience.items.map((item, i) => (
-            <motion.div
-              key={`${item.role}-${item.org}`}
-              className={styles.entry}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              viewport={{ once: true, margin: "-60px" }}
-            >
-              <div className={styles.entryDot} />
-              <div className={styles.entryContent}>
-                <div className={styles.entryHeader}>
-                  <h3 className={styles.entryRole}>{item.role}</h3>
-                  <span className={styles.entryDuration}>{item.duration}</span>
-                </div>
-                <p className={styles.entryOrg}>{item.org}</p>
-                {item.note && (
-                  <p className={styles.entryNote}>{item.note}</p>
-                )}
-                <ul className={styles.entryDetails}>
-                  {item.details.map((detail, j) => (
-                    <li key={j} className={styles.entryDetail}>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
+            <ExperienceEntry key={item.role + item.org} item={item} i={i} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+import { useMouseReveal } from "@/hooks/useMouseReveal";
+
+function ExperienceEntry({ item, i }) {
+  const { ref } = useMouseReveal();
+
+  const content = (
+    <>
+      <div className={styles.entryHeader}>
+        <h3 className={styles.entryRole}>{item.role}</h3>
+        <span className={styles.entryDuration}>{item.duration}</span>
+      </div>
+      <p className={styles.entryOrg}>{item.org}</p>
+      {item.note && <p className={styles.entryNote}>{item.note}</p>}
+      <ul className={styles.entryDetails}>
+        {item.details.map((detail, j) => (
+          <li key={j} className={styles.entryDetail}>
+            {detail}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+
+  return (
+    <motion.div
+      className={styles.entry}
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: i * 0.15 }}
+      viewport={{ once: true, margin: "-60px" }}
+    >
+      <div className={styles.entryDot} />
+      <div className={styles.entryContentWrapper} ref={ref}>
+        <div className={styles.normalLayer}>{content}</div>
+        <div
+          className={styles.blackboardLayer}
+          aria-hidden="true"
+        >
+          {content}
+        </div>
+      </div>
+    </motion.div>
   );
 }

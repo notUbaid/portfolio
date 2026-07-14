@@ -15,22 +15,38 @@ export default function About() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          {about.heading}
+          the <span style={{ color: "var(--accent)" }}>lore</span>
         </motion.h2>
 
-        <div className={styles.content}>
-          {about.paragraphs.map((para, i) => (
-            <motion.p
-              key={i}
-              className={styles.paragraph}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              viewport={{ once: true, margin: "-80px" }}
-            >
-              {para}
-            </motion.p>
-          ))}
+        <div className={styles.aboutLayout}>
+          <div className={styles.content}>
+            {about.paragraphs.map((para, i) => (
+              <motion.p
+                key={i}
+                className={styles.paragraph}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                viewport={{ once: true, margin: "-80px" }}
+              >
+                {para}
+              </motion.p>
+            ))}
+          </div>
+          
+          <motion.div 
+            className={styles.imageWrapper}
+            initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            <img 
+              src="/lore.jpeg" 
+              alt="Ubaid Khan" 
+              className={styles.loreImage}
+            />
+          </motion.div>
         </div>
       </div>
     </section>

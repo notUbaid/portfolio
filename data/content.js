@@ -4,18 +4,17 @@ export const hero = {
     "full-stack developer",
     "ui designer",
     "club president",
-    "professional hackathon attendee",
+    "competitive hackathon participant",
   ],
-  tagline: "this is not another AI-generated portfolio.",
+  tagline: "a personal testing ground for everything new i learn.",
 };
 
 export const about = {
   heading: "the lore",
   paragraphs: [
     "3rd year Computer Engineering student at IAR, Gandhinagar. Yes, the university no one have heard of, had to improvise because of core computer engineering branch.",
-    "I build things that actually ship. Metro apps with real users heading to Google Play, pharmacy systems that reduce medicine waste by 74%, and RL environments submitted to Meta hackathons.",
-    "I run the Computer Society & Gaming Club. Built our tournament portal from scratch, organized events open to all colleges, ran the committee. Before that I was Digital Head for CSGC and STEM Club, which is a fancy way of saying I made a lot of posters.",
-    "I've been in the top teams at multiple national-level hackathons. Always 1st or 2nd in my college ones, but who's counting those.",
+    "I build things that actually ship. Metro app with real users heading to Google Play, production-ready inventory platforms built overnight, and RL environments submitted to Meta hackathons.",
+    "I run the biggest club of my college, the Computer Society & Gaming Club. Built our tournament portal from scratch, organized events open to all colleges, ran the committee. Before that I was Digital Head for CSGC and STEM Club, which is a fancy way of saying i did lots of graphic designing and free pr for the club.",
   ],
 };
 
@@ -43,7 +42,7 @@ export const projects = {
       tech: ["React 19", "Node.js", "Express", "SQLite", "JWT", "Tailwind"],
       github: "https://github.com/notUbaid/inventra-inventory-system",
       live: "https://inventra-inventory-system.onrender.com/",
-      status: "Hackathon · 🥉",
+      status: "Hackathon · 3rd",
     },
     {
       name: "Veda",
@@ -54,7 +53,7 @@ export const projects = {
       tech: ["React 19", "TypeScript", "Firebase", "Gemini 1.5", "Recharts"],
       github: "https://github.com/notUbaid/Veda",
       live: "https://veda-management.vercel.app/",
-      status: "Hackathon · 🥈",
+      status: "Hackathon · 2nd",
     },
     {
       name: "Kontxt",
@@ -97,9 +96,9 @@ export const clientWork = {
     {
       name: "Indian Live Sports Hub",
       tagline:
-        "Sports news site. Because every Indian uncle needs live cricket scores on a website he can actually navigate.",
+        "Basketball live streaming and court coverage. 100k+ YouTube subs, so they're kind of a big deal.",
       description:
-        "Full sports media website with live scores, news, and event coverage. Clean responsive design built for heavy traffic and fast load times.",
+        "Built their digital presence for live sports media and broadcasting. Clean responsive design built to handle heavy traffic from their massive audience.",
       tech: ["Web Dev", "SEO", "Responsive Design"],
       live: "https://www.indianlivesportshub.com",
     },
@@ -126,10 +125,9 @@ export const achievements = {
     },
     {
       icon: "Trophy",
-      title: "Finalist in Multiple Hackathons",
-      event: "Meta × PyTorch × HuggingFace OpenEnv Hackathon",
-      org: "2026",
-      project: "Cloud Alert Triage",
+      title: "Finalist\nin Multiple Hackathons",
+      event: "would've won with a better team btw",
+      dimEvent: true,
     },
   ],
   footnote: "easily win college hackathons but who counts those",
@@ -154,7 +152,7 @@ export const experience = {
     {
       role: "Graphic Design Intern",
       org: "InAmigos Foundation",
-      duration: "1 week in 2025",
+      duration: "1 week sometime in mid 2025",
       note: "barely counts as an internship but I did get the certificate",
       details: [
         "Created visual content and online materials for social impact campaigns",
@@ -226,7 +224,7 @@ export const skills = {
 
 export const footer = {
   tagline:
-    "built with next.js, too much coffee, and a vendetta against glassmorphism",
+    "built with next.js, too much coffee, and a very tired laptop",
   github: "https://github.com/notUbaid",
   linkedin: "https://linkedin.com/in/notubaid",
   email: "me.khanubaid@gmail.com",

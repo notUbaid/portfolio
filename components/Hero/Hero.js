@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import styles from "./Hero.module.css";
 import { hero } from "@/data/content";
@@ -30,11 +31,50 @@ function FloatingShape({ delay, size, x, y, color }) {
   );
 }
 
+function NameChar({ char, i }) {
+  const [isSketched, setIsSketched] = useState(false);
+  
+  if (char === " ") {
+    return (
+      <motion.span
+        className={styles.nameSpace}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.4,
+          delay: 0.4 + i * 0.04,
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+      >
+        {"\u00A0"}
+      </motion.span>
+    );
+  }
+
+  return (
+    <motion.span
+      className={`${styles.nameChar} ${isSketched ? styles.sketched : ""}`}
+      data-char={char}
+      onMouseEnter={() => setIsSketched(prev => !prev)}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.4,
+        delay: 0.4 + i * 0.04,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      }}
+    >
+      <span className={styles.innerChar}>{char}</span>
+    </motion.span>
+  );
+}
+
 export default function Hero() {
   return (
     <section className={styles.hero} id="hero">
       {/* Subtle geometric shapes floating in background */}
       <div className={styles.shapes} aria-hidden="true">
+        <div className={styles.memeBackground} />
         <FloatingShape delay={0} size={300} x="75%" y="10%" color="var(--accent-dim)" />
         <FloatingShape delay={5} size={200} x="5%" y="60%" color="var(--accent-2-dim)" />
         <FloatingShape delay={10} size={150} x="85%" y="70%" color="var(--accent-dim)" />
@@ -57,19 +97,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.4 }}
         >
           {hero.name.split("").map((char, i) => (
-            <motion.span
-              key={i}
-              className={char === " " ? styles.nameSpace : styles.nameChar}
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.4,
-                delay: 0.4 + i * 0.04,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-            >
-              {char === " " ? "\u00A0" : char}
-            </motion.span>
+            <NameChar key={i} char={char} i={i} />
           ))}
           <motion.span
             className={styles.cursor}
@@ -88,16 +116,7 @@ export default function Hero() {
           transition={{ duration: 0.5, delay: 0.9 }}
         >
           {hero.roles.map((role, i) => (
-            <motion.span
-              key={role}
-              className={styles.rolePill}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: 1.0 + i * 0.1 }}
-              whileHover={{ borderColor: "var(--fg-subtle)" }}
-            >
-              {role}
-            </motion.span>
+            <RolePill key={role} role={role} i={i} />
           ))}
         </motion.div>
 
@@ -127,5 +146,90 @@ export default function Hero() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+const roleWittyTexts = {
+  "full-stack developer": "not without chatgpt",
+  "ui designer": "lorem ipsum reader",
+  "club president": "volunteered labour",
+  "competitive hackathon participant": "goes for free food and memories"
+};
+
+function RolePill({ role, i }) {
+  const [isFallen, setIsFallen] = useState(false);
+  const [dropY, setDropY] = useState(0);
+  const pillRef = useRef(null);
+
+  const handleClick = () => {
+    if (isFallen) return;
+    
+    if (pillRef.current) {
+      const rect = pillRef.current.getBoundingClientRect();
+      const distance = document.documentElement.scrollHeight - window.scrollY - rect.bottom;
+      setDropY(distance - 10 - Math.random() * 20); 
+    }
+    setIsFallen(true);
+  };
+
+  return (
+    <div className={styles.rolePillContainer}>
+      <span 
+        className={styles.wittyText}
+        style={{ 
+          opacity: isFallen ? 1 : 0, 
+          transition: "opacity 0.5s ease-in-out",
+          transitionDelay: "0.2s" // Wait slightly before showing
+        }}
+      >
+        {roleWittyTexts[role.toLowerCase()] || "just pretending"}
+      </span>
+      
+      <motion.span
+        ref={pillRef}
+        className={`${styles.rolePill} ${isFallen ? styles.fallen : ''}`}
+        data-text={role}
+        onClick={handleClick}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={
+          isFallen 
+            ? { 
+                y: [0, dropY, dropY - 80, dropY, dropY - 25, dropY], 
+                rotate: [
+                  0, 
+                  (i % 2 === 0 ? 1 : -1) * 45, 
+                  (i % 2 === 0 ? 1 : -1) * 15, 
+                  (i % 2 === 0 ? 1 : -1) * 30, 
+                  (i % 2 === 0 ? 1 : -1) * 20, 
+                  (i % 2 === 0 ? 1 : -1) * 25
+                ],
+                x: [
+                  0, 
+                  (i % 2 === 0 ? 1 : -1) * 30, 
+                  (i % 2 === 0 ? 1 : -1) * 40, 
+                  (i % 2 === 0 ? 1 : -1) * 50, 
+                  (i % 2 === 0 ? 1 : -1) * 55, 
+                  (i % 2 === 0 ? 1 : -1) * 60
+                ]
+              } 
+            : { opacity: 1, scale: 1, y: 0, rotate: 0, x: 0 }
+        }
+        transition={
+          isFallen
+            ? { 
+                duration: 2.8, 
+                times: [0, 0.6, 0.8, 0.9, 0.95, 1], 
+                ease: ["easeIn", "easeOut", "easeIn", "easeOut", "easeIn"] 
+              }
+            : { duration: 0.3, delay: 1.0 + i * 0.1 }
+        }
+        style={{ 
+          cursor: isFallen ? 'default' : 'pointer', 
+          zIndex: isFallen ? 50 : 2 
+        }}
+      >
+        {role}
+      </motion.span>
+    </div>
   );
 }

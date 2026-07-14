@@ -21,6 +21,9 @@
 
   --font-heading: var(--font-space-mono), "Courier New", monospace;
   --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+  --font-sketch-heading: var(--font-amanojaku), cursive;
+  --font-sketch-body: var(--font-handmade), cursive;
 
   --space-xs: 0.5rem;
   --space-sm: 1rem;

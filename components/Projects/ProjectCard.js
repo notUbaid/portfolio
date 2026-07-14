@@ -12,16 +12,13 @@ function GithubIcon({ size = 18 }) {
   );
 }
 
+import { useMouseReveal } from "@/hooks/useMouseReveal";
+
 export default function ProjectCard({ project, index }) {
-  return (
-    <motion.article
-      className={styles.card}
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      viewport={{ once: true, margin: "-60px" }}
-      whileHover={{ y: -6 }}
-    >
+  const { ref } = useMouseReveal();
+
+  const content = (
+    <>
       <div className={styles.cardHeader}>
         <div className={styles.cardStatus}>
           <span className={styles.statusText}>{project.status}</span>
@@ -60,12 +57,33 @@ export default function ProjectCard({ project, index }) {
       <p className={styles.cardDescription}>{project.description}</p>
 
       <div className={styles.cardTech}>
-        {project.tech.map((t) => (
-          <span key={t} className={styles.techTag}>
-            {t}
+        {project.tech.map((tech) => (
+          <span key={tech} className={styles.techTag}>
+            {tech}
           </span>
         ))}
       </div>
-    </motion.article>
+    </>
+  );
+
+  return (
+    <div className={styles.cardWrapper}>
+      <motion.article
+        className={styles.card}
+        ref={ref}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.08 }}
+        viewport={{ once: true, margin: "-60px" }}
+      >
+        <div className={styles.normalLayer}>{content}</div>
+        <div
+          className={styles.blackboardLayer}
+          aria-hidden="true"
+        >
+          {content}
+        </div>
+      </motion.article>
+    </div>
   );
 }
