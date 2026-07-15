@@ -72,12 +72,12 @@
   border-color: #888;
 }
 
-.blackboardLayer .cardDescription,
-.blackboardLayer .cardTagline,
-.blackboardLayer .cardLink,
-.blackboardLayer .statusText,
-.blackboardLayer .techTag,
-.blackboardLayer .linkLabel {
+.card .blackboardLayer .cardDescription,
+.card .blackboardLayer .cardTagline,
+.card .blackboardLayer .cardLink,
+.card .blackboardLayer .statusText,
+.card .blackboardLayer .techTag,
+.card .blackboardLayer .linkLabel {
   font-family: var(--font-sketch-body);
   border-color: #888;
 }
@@ -93,8 +93,8 @@
   color: var(--accent);
 }
 
-.blackboardLayer .statusText,
-.blackboardLayer .techTag {
+.card .blackboardLayer .statusText,
+.card .blackboardLayer .techTag {
   background: transparent;
   border-style: dashed;
 }
