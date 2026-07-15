@@ -1,0 +1,312 @@
+/* =============================================
+   PhysicsCat — CSS Module
+   A cute cat with state-driven animations.
+   ============================================= */
+
+/* ===== CONTAINER ===== */
+.cat {
+  position: absolute;
+  width: 50px;
+  height: 40px;
+  z-index: 100;
+  pointer-events: none;
+  will-change: left, top, clip-path;
+}
+
+/* ===== SVG ===== */
+.catSvg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: center bottom;
+}
+
+/* ===== TRANSFORM ORIGINS ===== */
+.tail            { transform-origin: 78px 48px; }
+.frontLegNear    { transform-origin: 42px 58px; }
+.frontLegFar     { transform-origin: 38px 58px; }
+.backLegNear     { transform-origin: 70px 58px; }
+.backLegFar      { transform-origin: 66px 58px; }
+.head            { transform-origin: 28px 45px; }
+.whiskers        { transform-origin: 28px 38px; }
+
+/* ===== DEFAULT EYE VISIBILITY ===== */
+.sleepEyes,
+.wideEyes        { display: none; }
+
+/* =========================================
+   STATE: CLIMBING — pulling itself up
+   ========================================= */
+.climbing .catSvg {
+  /* No specific SVG animation needed here, the JS handles the Y translation */
+  /* But we can animate the front paws to look like they are gripping */
+}
+.climbing .frontLegNear {
+  animation: pawGrip 0.5s infinite alternate ease-in-out;
+}
+.climbing .frontLegFar {
+  animation: pawGrip 0.5s infinite alternate-reverse ease-in-out;
+}
+.climbing .head {
+  transform: rotate(5deg) translateY(2px);
+}
+.climbing .tail {
+  transform: rotate(-20deg);
+}
+
+/* =========================================
+   STATE: IDLE — standing, looking around
+   ========================================= */
+.idle .tail {
+  animation: tailSwish 3s infinite ease-in-out;
+}
+.idle .head {
+  animation: headLook 8s infinite ease-in-out, earTwitch 6s infinite;
+}
+
+/* =========================================
+   STATE: SITTING — relaxed pose
+   ========================================= */
+.sitting .catSvg {
+  /* Squish the body down a bit to look seated */
+  transform: translateY(4px) scaleY(0.9);
+}
+.sitting .tail {
+  /* Wrap tail around body using only rotation to keep origin attached */
+  transform: rotate(70deg);
+  transition: transform 0.5s ease;
+}
+.sitting .backLegNear,
+.sitting .backLegFar {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sitting .frontLegNear,
+.sitting .frontLegFar {
+  transform: translateY(-10px);
+  transition: transform 0.3s ease;
+}
+.sitting .head {
+  animation: headLook 10s infinite ease-in-out, earTwitch 8s infinite;
+}
+
+/* =========================================
+   STATE: WALKING — patrol on surface
+   ========================================= */
+.walking .catSvg {
+  animation: walkBob 0.4s infinite alternate ease-in-out;
+}
+.walking .tail {
+  animation: tailWalk 0.5s infinite alternate ease-in-out;
+}
+.walking .frontLegNear {
+  animation: legStep 0.4s infinite alternate ease-in-out;
+}
+.walking .backLegNear {
+  animation: legStep 0.4s infinite alternate-reverse ease-in-out;
+}
+.walking .frontLegFar {
+  animation: legStep 0.4s infinite alternate-reverse ease-in-out;
+}
+.walking .backLegFar {
+  animation: legStep 0.4s infinite alternate ease-in-out;
+}
+
+/* =========================================
+   STATE: SLEEPING — curled up, breathing
+   ========================================= */
+.sleeping .catSvg {
+  transform: translateY(8px) scaleY(0.8) scaleX(1.1);
+  animation: breathe 2.5s infinite ease-in-out;
+  transition: transform 0.5s ease;
+}
+.sleepZs {
+  display: none;
+}
+.sleeping .sleepZs {
+  display: block;
+}
+.sleeping .z1 {
+  animation: floatZ 3s infinite linear;
+}
+.sleeping .z2 {
+  animation: floatZ 3s infinite linear 1.5s;
+  opacity: 0;
+}
+.sleeping .openEyes { display: none; }
+.sleeping .sleepEyes { display: inline; }
+.sleeping .tail {
+  transform: rotate(85deg);
+  transition: transform 0.5s ease;
+}
+.sleeping .head {
+  transform: translateY(8px) rotate(15deg);
+  transition: transform 0.5s ease;
+}
+.sleeping .backLegNear, .sleeping .backLegFar {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.sleeping .frontLegNear, .sleeping .frontLegFar {
+  transform: translateY(-10px);
+  transition: transform 0.5s ease;
+}
+
+/* =========================================
+   STATE: STARTLED — brief freeze of terror
+   ========================================= */
+.startled .catSvg {
+  animation: startleJump 0.2s ease-out;
+}
+.startled .openEyes { display: none; }
+.startled .wideEyes { display: inline; }
+.startled .head {
+  transform: scaleY(0.9) translateY(2px);
+}
+.startled .tail {
+  transform: rotate(-30deg);
+}
+.startled .whiskers {
+  transform: scaleX(1.3);
+}
+
+/* =========================================
+   STATE: FLEEING — scrambling away
+   ========================================= */
+.fleeing .catSvg {
+  animation: walkBob 0.12s infinite alternate ease-in-out;
+}
+.fleeing .openEyes { display: none; }
+.fleeing .wideEyes { display: inline; }
+.fleeing .head {
+  transform: scaleY(0.9) translateY(2px);
+}
+.fleeing .tail {
+  animation: tailFlee 0.15s infinite alternate ease-in-out;
+}
+.fleeing .frontLegNear {
+  animation: legFlee 0.12s infinite alternate ease-in-out;
+}
+.fleeing .backLegNear {
+  animation: legFlee 0.12s infinite alternate-reverse ease-in-out;
+}
+.fleeing .frontLegFar {
+  animation: legFlee 0.12s infinite alternate-reverse ease-in-out;
+}
+.fleeing .backLegFar {
+  animation: legFlee 0.12s infinite alternate ease-in-out;
+}
+.fleeing .whiskers {
+  transform: scaleX(1.3);
+}
+
+/* =========================================
+   6. HIDING & PEEKING (Scared)
+   ========================================= */
+.hiding .openEyes { display: none; }
+.hiding .wideEyes { display: inline; }
+.hiding .head {
+  transform: scaleY(0.9) translateY(2px);
+}
+
+.peeking .openEyes { display: none; }
+.peeking .wideEyes { display: inline; }
+.peeking .head {
+  animation: peekLook 2s infinite ease-in-out;
+}
+
+/* =========================================
+   7. JUMPING
+   ========================================= */
+.jumping .openEyes { display: none; }
+.jumping .wideEyes { display: inline; }
+.jumping .frontLegNear, .jumping .frontLegFar {
+  transform: rotate(-30deg);
+}
+.jumping .backLegNear, .jumping .backLegFar {
+  transform: rotate(30deg);
+}
+.jumping .tail {
+  transform: rotate(20deg);
+}
+
+/* =========================================
+   8. HIDDEN BEHIND
+   ========================================= */
+.hidden_behind {
+  opacity: 0;
+}
+
+/* =============================================
+   KEYFRAMES
+   ============================================= */
+@keyframes peekLook {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes tailSwish {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(20deg); }
+  75%      { transform: rotate(-8deg); }
+}
+
+@keyframes tailWalk {
+  from { transform: rotate(-10deg); }
+  to   { transform: rotate(10deg); }
+}
+
+@keyframes tailFlee {
+  from { transform: rotate(-30deg); }
+  to   { transform: rotate(-15deg); }
+}
+
+@keyframes walkBob {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(8px) scaleY(0.8) scaleX(1.1); }
+  50%      { transform: translateY(8px) scaleY(0.85) scaleX(1.12); }
+}
+
+@keyframes startleJump {
+  0%   { transform: translateY(0) scaleY(1); }
+  25%  { transform: translateY(-10px) scaleY(1.15); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+@keyframes legStep {
+  from { transform: rotate(-12deg); }
+  to   { transform: rotate(12deg); }
+}
+
+@keyframes legFlee {
+  from { transform: rotate(-25deg); }
+  to   { transform: rotate(25deg); }
+}
+
+@keyframes earTwitch {
+  0%, 84%, 90%, 100% { transform: none; }
+  87%                { transform: rotate(-8deg); }
+}
+
+@keyframes headLook {
+  0%, 100% { transform: none; }
+  30%      { transform: rotate(-3deg); }
+  70%      { transform: rotate(3deg); }
+}
+
+@keyframes pawGrip {
+  from { transform: translateY(-3px) rotate(-10deg); }
+  to   { transform: translateY(3px) rotate(10deg); }
+}
+
+@keyframes floatZ {
+  0% { transform: translate(0, 0) scale(0.8); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate(-10px, -20px) scale(1.5); opacity: 0; }
+}

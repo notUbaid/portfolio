@@ -67,7 +67,7 @@ function ExperienceEntry({ item, i }) {
       viewport={{ once: true, margin: "-60px" }}
     >
       <div className={styles.entryDot} />
-      <div className={styles.entryContentWrapper} ref={ref}>
+      <div className={styles.entryContentWrapper} ref={ref} data-cat-target="true">
         <div className={styles.normalLayer}>{renderContent(false)}</div>
         <div
           className={styles.blackboardLayer}

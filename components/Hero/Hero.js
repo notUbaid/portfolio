@@ -39,6 +39,7 @@ function NameChar({ char, i }) {
     return (
       <motion.span
         className={styles.nameSpace}
+        data-cat-target="true"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{
@@ -56,6 +57,7 @@ function NameChar({ char, i }) {
     <motion.span
       className={`${styles.nameChar} ${isSketched ? styles.sketched : ""}`}
       data-char={char}
+      data-cat-target="true"
       onMouseEnter={() => setIsSketched(prev => !prev)}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -65,7 +67,7 @@ function NameChar({ char, i }) {
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
     >
-      <span className={styles.innerChar} data-cat-target={char.toLowerCase() === 'u' ? "true" : undefined}>{char}</span>
+      <span className={styles.innerChar}>{char}</span>
     </motion.span>
   );
 }
@@ -84,6 +86,7 @@ export default function Hero() {
       <div className={styles.container}>
         <motion.p
           className={styles.prelude}
+          data-cat-target="true"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -123,6 +126,7 @@ export default function Hero() {
 
         <motion.p
           className={styles.tagline}
+          data-cat-target="true"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.6 }}

@@ -1,7 +1,7 @@
 import { Inter, Space_Mono, Caveat } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import RoamingCat from "@/components/Cat/RoamingCat";
+import PhysicsCat from "@/components/Cat/PhysicsCat";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${inter.variable} ${spaceMono.variable} ${caveat.variable} ${handmadeAlphabet.variable} ${amanojaku.variable}`}>
       <body>
         {children}
-        <RoamingCat />
+        <PhysicsCat />
       </body>
     </html>
   );
