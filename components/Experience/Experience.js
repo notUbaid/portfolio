@@ -7,6 +7,7 @@ import { experience } from "@/data/content";
 export default function Experience() {
   return (
     <section className={styles.experience} id="experience">
+      <img src="/resume.jpg" className="sectionBg" alt="" loading="lazy" decoding="async" />
       <div className="section">
         <motion.h2
           className="section-heading"

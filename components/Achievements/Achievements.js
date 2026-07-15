@@ -7,6 +7,7 @@ import { achievements } from "@/data/content";
 export default function Achievements() {
   return (
     <section className={styles.achievements} id="achievements">
+      <img src="/trophy.jpg" className="sectionBg" alt="" loading="lazy" decoding="async" />
       <div className="section">
         <motion.h2
           className="section-heading"

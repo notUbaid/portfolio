@@ -4,20 +4,7 @@
   z-index: 1;
 }
 
-.skills::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url('/actually.jpg');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.15;
-  z-index: 0;
-  pointer-events: none;
-  filter: blur(2px) grayscale(100%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 95%);
-  mask-image: radial-gradient(ellipse at center, black 0%, transparent 95%);
-}
+
 
 .categories {
   display: flex;

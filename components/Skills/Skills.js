@@ -9,6 +9,7 @@ import { usePhysicsPill } from "@/lib/physics";
 export default function Skills() {
   return (
     <section className={styles.skills} id="skills">
+      <img src="/actually.jpg" className="sectionBg" alt="" loading="lazy" decoding="async" />
       <div className="section">
         <motion.h2
           className="section-heading"

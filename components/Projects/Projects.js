@@ -8,7 +8,7 @@ import ProjectCard from "./ProjectCard";
 export default function Projects() {
   return (
     <section className={styles.projects} id="projects">
-      <img src="/ship.webp" className={styles.sectionBg} alt="" />
+      <img src="/ship.webp" className="sectionBg" alt="" loading="lazy" decoding="async" />
       <div className="section">
         <motion.h2
           className="section-heading"

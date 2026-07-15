@@ -8,7 +8,7 @@ import { clientWork } from "@/data/content";
 export default function ClientWork() {
   return (
     <section className={styles.clientWork} id="client-work">
-      <img src="/paid.jpg" className={styles.sectionBg} alt="" />
+      <img src="/paid.jpg" className="sectionBg" alt="" loading="lazy" decoding="async" />
       <div className="section">
         <motion.h2
           className="section-heading"

@@ -45,6 +45,8 @@ export default function About() {
               src="/lore.jpeg" 
               alt="Ubaid Khan" 
               className={styles.loreImage}
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
         </div>
