@@ -87,6 +87,18 @@ export const projects = {
       live: "https://www.ahmedabadmetro.site",
       status: "Production",
     },
+    {
+      name: "WhiteNet",
+      tagline:
+        "Built a Zero Trust network layer from scratch in 36 hours because normal VPNs were too mainstream.",
+      description:
+        "A decentralized, identity-first Zero Trust network layer protocol built in Python. It strictly binds node identities to IPv6 addresses using a custom Public Key Infrastructure (PKI) to neutralize IP spoofing and MITM attacks. Features full simulations of TLS 1.3 handshakes, DNSSEC record signing, and encrypted VPN tunnel derivation (AES-256-GCM). The project also includes a tamper-evident audit system using SHA-256 hash chains, decentralized community governance, and a real-time web dashboard using React and Flask to visualize active network topologies.",
+      wittyDescription:
+        "I saw a fancy-looking cybersecurity problem statement and decided to build my first ever cyber project. 36 hours of caffeine-fueled coding later, I ended up writing a custom Public Key Infrastructure, simulating TLS 1.3 handshakes, and building a tamper-evident audit log from scratch. Turns out, enforcing strict Zero Trust architecture is actually pretty fun when you're sleep-deprived and building real-time force-directed graphs to visualize your encrypted VPN tunnels.",
+      tech: ["Python", "React", "Flask", "Cryptography", "Zero Trust"],
+      github: "https://github.com/Destroyerved/WhiteNet",
+      status: "Hackathon",
+    },
   ],
 };
 

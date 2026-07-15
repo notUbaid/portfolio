@@ -211,17 +211,8 @@
   border-color: var(--border-hover);
 }
 
-/* ---- Featured card spans full width ---- */
-.grid > *:first-child {
-  grid-column: 1 / -1;
-}
-
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
-  }
-
-  .grid > *:first-child {
-    grid-column: 1;
   }
 }
