@@ -26,7 +26,7 @@
   color: var(--fg-subtle);
   text-transform: lowercase;
   letter-spacing: 0.03em;
-  max-width: 500px;
+  max-width: 800px;
   line-height: 1.6;
 }
 
