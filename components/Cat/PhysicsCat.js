@@ -1,9 +1,6 @@
 "use client";
 /* =============================================
    PhysicsCat — Realism Overhaul
-   The cat climbs up from behind cards, sits,
-   walks, sleeps, gets scared, hides, and 
-   re-emerges from the exact same spot.
    ============================================= */
 
 import { useState, useEffect, useRef } from "react";
@@ -33,7 +30,11 @@ const S = Object.freeze({
   PEEKING:       "peeking",
   JUMPING:       "jumping",
   RELOCATING:    "relocating",
-  HIDING_RELOCATE: "hiding_relocate"
+  HIDING_RELOCATE: "hiding_relocate",
+  PURRING:       "purring",
+  PLAYING:       "playing",
+  DRAGGED:       "dragged",
+  FALLING:       "falling"
 });
 
 // ── Cat Color Palettes ──
@@ -52,11 +53,10 @@ function gatherPlatforms() {
       const r = el.getBoundingClientRect();
       return { l: r.left + sX, r: r.right + sX, t: r.top + sY, w: r.width, el };
     })
-    .filter(p => p.w >= CAT_W * 0.2); // allow small targets like text characters
+    .filter(p => p.w >= CAT_W * 0.2);
 }
 
 function visiblePlatforms(ps) {
-  // Never spawn in the first viewport (Hero section)
   const lo = Math.max(window.scrollY + 100, window.innerHeight);
   const hi = window.scrollY + window.innerHeight + 200;
   return ps.filter(p => p.t > lo && p.t < hi);
@@ -66,16 +66,16 @@ function findJumpTarget(c, allPlats) {
   const reachX = 350;
   const reachY = 250;
   const targets = allPlats.filter(p => {
-    if (p.el === c.plat.el) return false;
+    if (p.el === c.plat?.el) return false;
     let dx = c.dir === 1 ? p.l - (c.x + CAT_W) : c.x - p.r;
-    if (dx < -CAT_W || dx > reachX) return false; // allow slight overlap
-    const dy = Math.abs(p.t - c.plat.t);
+    if (dx < -CAT_W || dx > reachX) return false;
+    const dy = Math.abs(p.t - (c.plat?.t || c.yOverride || 0));
     return dy <= reachY;
   });
   if (targets.length === 0) return null;
   targets.sort((a, b) => {
-    const da = Math.abs(a.l - c.x) + Math.abs(a.t - c.plat.t);
-    const db = Math.abs(b.l - c.x) + Math.abs(b.t - c.plat.t);
+    const da = Math.abs(a.l - c.x) + Math.abs(a.t - (c.plat?.t || 0));
+    const db = Math.abs(b.l - c.x) + Math.abs(b.t - (c.plat?.t || 0));
     return da - db;
   });
   return targets[0];
@@ -90,7 +90,7 @@ const startJump = (c, target) => {
   c.jumpEndX = c.dir === 1 ? target.l : target.r - CAT_W;
   c.jumpEndY = target.t;
   const dist = Math.hypot(c.jumpEndX - c.jumpStartX, c.jumpEndY - c.jumpStartY);
-  c.jumpDur = Math.max(30, dist * 0.15); // ~0.15 frames per pixel
+  c.jumpDur = Math.max(30, dist * 0.15);
 };
 
 export default function PhysicsCat() {
@@ -99,25 +99,37 @@ export default function PhysicsCat() {
     x: 0, state: S.HIDDEN, dir: 1, plat: null,
     t: 0, na: 0, clip: CAT_H + 5, life: 0,
     breed: BREEDS[0],
-    jumpTarget: null, jumpStartX: 0, jumpStartY: 0, jumpEndX: 0, jumpEndY: 0, jumpDur: 0, yOverride: null
+    jumpTarget: null, jumpStartX: 0, jumpStartY: 0, jumpEndX: 0, jumpEndY: 0, jumpDur: 0, yOverride: null,
+    hoverTime: 0, playTime: 0, dragOffsetX: 0, dragOffsetY: 0, dragVx: 0, vy: 0
   });
 
-  const mouse = useRef({ x: -9e3, y: -9e3 });
+  const mouse = useRef({ x: -9e3, y: -9e3, lastX: -9e3, lastY: -9e3, speed: 0, speedHist: [] });
   const timers = useRef({});
   const rafRef = useRef();
   const prevTs = useRef(0);
 
   useEffect(() => {
-    const onMouse = (e) => mouse.current = { x: e.clientX + window.scrollX, y: e.clientY + window.scrollY };
+    const onMouse = (e) => {
+      mouse.current.x = e.clientX + window.scrollX;
+      mouse.current.y = e.clientY + window.scrollY;
+    };
     window.addEventListener("mousemove", onMouse);
+
+    const handlePointerUp = () => {
+      if (C.current.state === S.DRAGGED) {
+        C.current.state = S.FALLING;
+        C.current.vy = 0;
+      }
+    };
+    window.addEventListener("pointerup", handlePointerUp);
 
     const clearTimers = () => { Object.values(timers.current).forEach(clearTimeout); timers.current = {}; };
 
-    const isScared = (radius = SCARE_R) => {
+    const isScared = (radius = SCARE_R, minSpeed = 5) => {
       const catY = C.current.yOverride !== null ? C.current.yOverride - CAT_H : (C.current.plat ? C.current.plat.t - CAT_H : 0);
       const dx = mouse.current.x - (C.current.x + CAT_W / 2);
       const dy = mouse.current.y - (catY + CAT_H / 2);
-      return dx * dx + dy * dy < radius * radius;
+      return (dx * dx + dy * dy < radius * radius) && mouse.current.speed > minSpeed;
     };
 
     const spawn = () => {
@@ -147,17 +159,56 @@ export default function PhysicsCat() {
       const c = C.current;
       c.t += dt; c.life += dt;
 
-      if (c.plat?.el && document.body.contains(c.plat.el) && c.state !== S.JUMPING) {
+      // Mouse speed tracking
+      if (mouse.current.lastX !== -9e3) {
+        const mdx = mouse.current.x - mouse.current.lastX;
+        const mdy = mouse.current.y - mouse.current.lastY;
+        const spd = Math.hypot(mdx, mdy) / dt;
+        mouse.current.speedHist.push(spd);
+        if (mouse.current.speedHist.length > 10) mouse.current.speedHist.shift();
+        mouse.current.speed = mouse.current.speedHist.reduce((a, b) => a + b, 0) / mouse.current.speedHist.length;
+      }
+      mouse.current.lastX = mouse.current.x;
+      mouse.current.lastY = mouse.current.y;
+
+      // Update platform bounds
+      if (c.plat?.el && document.body.contains(c.plat.el) && c.state !== S.JUMPING && c.state !== S.DRAGGED && c.state !== S.FALLING) {
         const rr = c.plat.el.getBoundingClientRect();
         c.plat.l = rr.left + window.scrollX; c.plat.r = rr.right + window.scrollX;
         c.plat.t = rr.top + window.scrollY; c.plat.w = rr.width;
-      } else if (c.plat && c.state !== S.HIDDEN && c.state !== S.JUMPING) {
+      } else if (c.plat && c.state !== S.HIDDEN && c.state !== S.JUMPING && c.state !== S.DRAGGED && c.state !== S.FALLING) {
         c.state = S.HIDDEN;
         timers.current.rs = setTimeout(spawn, RESPAWN_MS);
       }
 
-      if (c.life > MAX_LIFE && [S.IDLE, S.SITTING, S.WALKING, S.SLEEPING].includes(c.state)) {
+      if (c.life > MAX_LIFE && [S.IDLE, S.SITTING, S.WALKING, S.SLEEPING, S.PURRING, S.PLAYING].includes(c.state)) {
         c.state = S.HIDING; c.t = 0;
+      }
+
+      // Interaction Logic (Petting / Playing)
+      if (![S.HIDDEN, S.CLIMBING, S.HIDING, S.HIDDEN_BEHIND, S.PEEKING, S.DRAGGED, S.FALLING, S.JUMPING, S.FLEEING].includes(c.state)) {
+        const catY = c.yOverride !== null ? c.yOverride - CAT_H : (c.plat ? c.plat.t - CAT_H : 0);
+        const relX = mouse.current.x - (c.x + CAT_W / 2);
+        const relY = mouse.current.y - (catY + CAT_H / 2);
+        const mDist = Math.hypot(relX, relY);
+
+        if (mDist < 40 && mouse.current.speed < 2) {
+           c.hoverTime += dt;
+           if (c.hoverTime > 30 && c.state !== S.PURRING) { c.state = S.PURRING; c.t = 0; }
+        } else {
+           c.hoverTime = 0;
+        }
+
+        if (mDist < 120 && mouse.current.speed > 2 && mouse.current.speed < 15 && [S.IDLE, S.SITTING, S.PURRING].includes(c.state)) {
+           if ((c.dir === 1 && relX > 0) || (c.dir === -1 && relX < 0)) {
+             c.playTime += dt;
+             if (c.playTime > 20 && c.state !== S.PLAYING) { c.state = S.PLAYING; c.t = 0; c.na = 120 + Math.random() * 60; }
+           } else {
+             c.playTime = 0;
+           }
+        } else {
+           c.playTime = 0;
+        }
       }
 
       switch (c.state) {
@@ -187,6 +238,16 @@ export default function PhysicsCat() {
           if (isScared(SCARE_R * 0.85)) { c.state = S.STARTLED; c.t = 0; break; }
           if (c.t > c.na) { c.state = S.IDLE; c.t = 0; c.na = 30 + Math.random() * 60; }
           break;
+        case S.PURRING:
+          if (isScared()) { c.state = S.STARTLED; c.t = 0; break; }
+          const catY = c.yOverride !== null ? c.yOverride - CAT_H : (c.plat ? c.plat.t - CAT_H : 0);
+          const mDist = Math.hypot(mouse.current.x - (c.x + CAT_W/2), mouse.current.y - (catY + CAT_H/2));
+          if (mDist > 60 || mouse.current.speed > 5) { c.state = S.IDLE; c.t = 0; c.na = 30; }
+          break;
+        case S.PLAYING:
+          if (isScared(SCARE_R, 15)) { c.state = S.STARTLED; c.t = 0; break; }
+          if (c.t > c.na) { c.state = S.IDLE; c.t = 0; c.na = 30; }
+          break;
         case S.WALKING:
         case S.RELOCATING:
           if (isScared()) { c.state = S.STARTLED; c.t = 0; break; }
@@ -212,8 +273,40 @@ export default function PhysicsCat() {
             c.plat = c.jumpTarget; c.x = c.jumpEndX; c.state = S.IDLE; c.t = 0; c.na = 30; c.yOverride = null;
           }
           break;
+        case S.DRAGGED:
+          c.x = mouse.current.x - (c.dragOffsetX || CAT_W/2);
+          c.yOverride = mouse.current.y - (c.dragOffsetY || CAT_H/2) + CAT_H;
+          const vx = mouse.current.x - mouse.current.lastX;
+          c.dragVx = (c.dragVx || 0) * 0.8 + vx * 0.2; // smoothed velocity for dangling angle
+          break;
+        case S.FALLING:
+          c.vy = (c.vy || 0) + 0.6 * dt; // gravity
+          c.yOverride += c.vy * dt;
+          
+          // Collision check
+          const allPlats = gatherPlatforms();
+          const vis = visiblePlatforms(allPlats);
+          const below = vis.filter(p => p.l < c.x + CAT_W - 10 && p.r > c.x + 10 && p.t >= c.yOverride - CAT_H - c.vy * dt * 2);
+          if (below.length > 0) {
+            below.sort((a,b) => a.t - b.t);
+            const hit = below[0];
+            if (c.yOverride >= hit.t) {
+               // Landed
+               c.yOverride = null;
+               c.plat = hit;
+               c.state = S.IDLE;
+               c.t = 0;
+               c.na = 60; // rest a bit after falling
+            }
+          }
+          
+          if (c.yOverride > window.scrollY + window.innerHeight + 200) {
+            c.state = S.HIDDEN;
+            timers.current.rs = setTimeout(spawn, RESPAWN_MS);
+          }
+          break;
         case S.SLEEPING:
-          if (isScared(SCARE_R * 0.7)) { c.state = S.STARTLED; c.t = 0; break; }
+          if (isScared(SCARE_R * 0.7, 8)) { c.state = S.STARTLED; c.t = 0; break; }
           if (c.t > c.na) { c.state = S.SITTING; c.t = 0; c.na = 60 + Math.random() * 100; }
           break;
         case S.STARTLED:
@@ -232,13 +325,12 @@ export default function PhysicsCat() {
           if (c.clip >= CAT_H + 5) { c.clip = CAT_H + 5; c.state = S.HIDDEN_BEHIND; c.t = 0; }
           break;
         case S.HIDDEN_BEHIND:
-          if (!isScared(SCARE_R + 80)) {
+          if (!isScared(SCARE_R + 80, 5)) {
             if (c.t > 60) { c.state = S.PEEKING; c.t = 0; c.life = 0; }
           } else { c.t = 0; }
           if (c.life > MAX_LIFE * 2) { c.state = S.HIDDEN; timers.current.rs = setTimeout(spawn, RESPAWN_MS); }
           break;
         case S.PEEKING:
-          // Pop head up (clip = CAT_H - 18)
           if (c.clip > CAT_H - 18) { c.clip -= 1.5 * dt; }
           else { c.clip = CAT_H - 18; }
           if (c.t > 120) { c.state = S.CLIMBING; c.t = 0; }
@@ -246,34 +338,28 @@ export default function PhysicsCat() {
       }
 
       setFrame(
-        c.state === S.HIDDEN || !c.plat
+        c.state === S.HIDDEN || (!c.plat && c.state !== S.DRAGGED && c.state !== S.FALLING)
           ? null
           : { 
               x: c.x, 
-              y: c.state === S.JUMPING ? c.yOverride - CAT_H : c.plat.t - CAT_H + c.clip, 
+              y: c.yOverride !== null ? c.yOverride - CAT_H : c.plat.t - CAT_H + c.clip, 
               s: c.state, 
               d: c.dir, 
               cl: c.clip, 
-              breed: c.breed 
+              breed: c.breed,
+              dragVx: c.dragVx
             }
       );
 
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    const onScroll = () => {
-      if (C.current.state === S.HIDDEN && !timers.current.rs && !timers.current.retry) {
-        timers.current.retry = setTimeout(spawn, 800);
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-
     timers.current.init = setTimeout(spawn, 1500);
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("mousemove", onMouse);
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("pointerup", handlePointerUp);
       cancelAnimationFrame(rafRef.current);
       clearTimers();
     };
@@ -281,10 +367,20 @@ export default function PhysicsCat() {
 
   if (!frame) return null;
 
-  const { x, y, s, d, cl, breed } = frame;
-
-  // We only clip when not completely hidden behind (CSS handles opacity 0 for hidden_behind)
+  const { x, y, s, d, cl, breed, dragVx } = frame;
   const isClipping = cl > 0 && s !== S.HIDDEN_BEHIND;
+
+  const handlePointerDown = (e) => {
+    e.preventDefault(); // prevent text selection
+    // Only allow drag if not hidden
+    if (s === S.HIDDEN || s === S.HIDING || s === S.HIDDEN_BEHIND || s === S.CLIMBING || s === S.PEEKING) return;
+    
+    C.current.state = S.DRAGGED;
+    C.current.t = 0;
+    const rect = e.currentTarget.getBoundingClientRect();
+    C.current.dragOffsetX = e.clientX - rect.left;
+    C.current.dragOffsetY = e.clientY - rect.top;
+  };
 
   return (
     <div
@@ -292,16 +388,27 @@ export default function PhysicsCat() {
       style={{
         left: x,
         top: y,
-        transform: d > 0 ? "scaleX(-1)" : "none",
+        transform: s === S.DRAGGED 
+          ? `rotate(${(dragVx || 0) * 1.5}deg) scaleX(${d > 0 ? -1 : 1})`
+          : (d > 0 ? "scaleX(-1)" : "none"),
+        transformOrigin: s === S.DRAGGED ? "center top" : "center center",
         ...(isClipping ? { clipPath: `inset(0 0 ${cl}px 0)` } : {}),
+        cursor: s === S.DRAGGED ? "grabbing" : "grab"
       }}
       aria-hidden="true"
+      onPointerDown={handlePointerDown}
     >
+      {s === S.PURRING && (
+        <div className={styles.hearts}>
+          <div className={styles.heart} style={{animationDelay: "0s"}}>❤️</div>
+          <div className={styles.heart} style={{animationDelay: "0.4s"}}>❤️</div>
+          <div className={styles.heart} style={{animationDelay: "0.8s"}}>❤️</div>
+        </div>
+      )}
       <CatSVG breed={breed} />
     </div>
   );
 }
-
 // ══════════════════════════════════════════════
 // CatSVG — Cute kitten with breed colors
 // ══════════════════════════════════════════════

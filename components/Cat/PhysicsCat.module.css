@@ -237,6 +237,76 @@
   opacity: 0;
 }
 
+/* =========================================
+   9. PURRING (Petting)
+   ========================================= */
+.purring .openEyes { display: none; }
+.purring .sleepEyes { display: inline; }
+.purring .head {
+  transform: translateY(1px);
+}
+.purring .tail {
+  transform: rotate(5deg);
+}
+
+.hearts {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.heart {
+  font-size: 14px;
+  opacity: 0;
+  animation: floatHeart 1.5s infinite ease-out;
+}
+
+/* =========================================
+   10. PLAYING (Batting)
+   ========================================= */
+.playing .wideEyes { display: inline; }
+.playing .openEyes { display: none; }
+.playing .frontLegNear {
+  animation: batPaw 0.25s infinite alternate ease-in-out;
+  transform-origin: top center;
+}
+.playing .head {
+  transform: rotate(5deg);
+}
+
+/* =========================================
+   11. DRAGGED & FALLING
+   ========================================= */
+.dragged .wideEyes { display: inline; }
+.dragged .openEyes { display: none; }
+.dragged .frontLegNear, .dragged .frontLegFar, 
+.dragged .backLegNear, .dragged .backLegFar {
+  transform: rotate(0deg);
+  animation: none !important;
+}
+.dragged .tail {
+  transform: rotate(45deg);
+}
+.dragged .head {
+  transform: translateY(-2px);
+}
+
+.falling .wideEyes { display: inline; }
+.falling .openEyes { display: none; }
+.falling .frontLegNear, .falling .frontLegFar {
+  transform: rotate(-10deg);
+}
+.falling .backLegNear, .falling .backLegFar {
+  transform: rotate(10deg);
+}
+.falling .tail {
+  transform: rotate(-30deg);
+}
+
 /* =============================================
    KEYFRAMES
    ============================================= */
@@ -244,6 +314,18 @@
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-4px); }
   75% { transform: translateX(4px); }
+}
+
+@keyframes floatHeart {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { transform: translateY(-5px) scale(1); opacity: 1; }
+  80% { transform: translateY(-15px) scale(1); opacity: 1; }
+  100% { transform: translateY(-25px) scale(1.5); opacity: 0; }
+}
+
+@keyframes batPaw {
+  0% { transform: rotate(0deg) translateY(0); }
+  100% { transform: rotate(-50deg) translateY(-8px); }
 }
 
 @keyframes tailSwish {
