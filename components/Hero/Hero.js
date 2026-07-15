@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import styles from "./Hero.module.css";
 import { hero } from "@/data/content";
@@ -73,6 +73,25 @@ function NameChar({ char, i }) {
 }
 
 export default function Hero() {
+  const [tagline, setTagline] = useState(hero.tagline);
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    if (hour >= 0 && hour < 4) {
+      setTagline(`It's ${timeStr}. If you're a recruiter, please go to sleep. If you're an engineer, what broke in production?`);
+    } else if (hour >= 4 && hour < 7) {
+      setTagline(`You're either horribly jetlagged, or you haven't slept since yesterday. Either way, welcome.`);
+    } else if (hour >= 7 && hour < 12) {
+      setTagline(`Another day of converting caffeine into obscure error messages.`);
+    } else if (hour >= 12 && hour < 17) {
+      setTagline(`You should probably be doing real work right now instead of looking at my portfolio. I won't tell if you don't.`);
+    } else if (hour >= 17 && hour < 24) {
+      setTagline(`Production is frozen for the day. Perfect time to rethink your hiring decisions.`);
+    }
+  }, []);
+
   return (
     <section className={styles.hero} id="hero">
       {/* Subtle geometric shapes floating in background */}
@@ -131,7 +150,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1.6 }}
         >
-          {hero.tagline}
+          {tagline}
         </motion.p>
 
         <motion.div

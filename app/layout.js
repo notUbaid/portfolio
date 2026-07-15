@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import PhysicsCat from "@/components/Cat/PhysicsCat";
 import ConsoleArt from "@/components/ConsoleArt";
+import ChalkTrail from "@/components/ChalkTrail";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -131,6 +132,7 @@ export default function RootLayout({ children }) {
         <ConsoleArt />
         {children}
         <PhysicsCat />
+        <ChalkTrail />
       </body>
     </html>
   );
