@@ -1,6 +1,7 @@
 import { Inter, Space_Mono, Caveat } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import RoamingCat from "@/components/Cat/RoamingCat";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -59,12 +60,24 @@ export const metadata = {
     description:
       "Full-stack developer who builds things that ship. Not another AI-generated portfolio.",
   },
+  icons: {
+    icon: [
+      { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/web-app-manifest-192x192.png" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceMono.variable} ${caveat.variable} ${handmadeAlphabet.variable} ${amanojaku.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <RoamingCat />
+      </body>
     </html>
   );
 }

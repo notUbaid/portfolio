@@ -17,7 +17,7 @@ import { useMouseReveal } from "@/hooks/useMouseReveal";
 export default function ProjectCard({ project, index }) {
   const { ref } = useMouseReveal();
 
-  const content = (
+  const renderContent = (isBlackboard) => (
     <>
       <div className={styles.cardHeader}>
         <div className={styles.cardStatus}>
@@ -54,7 +54,9 @@ export default function ProjectCard({ project, index }) {
 
       <h3 className={styles.cardTitle}>{project.name}</h3>
       <p className={styles.cardTagline}>{project.tagline}</p>
-      <p className={styles.cardDescription}>{project.description}</p>
+      <p className={styles.cardDescription}>
+        {isBlackboard && project.wittyDescription ? project.wittyDescription : project.description}
+      </p>
 
       <div className={styles.cardTech}>
         {project.tech.map((tech) => (
@@ -70,18 +72,19 @@ export default function ProjectCard({ project, index }) {
     <div className={styles.cardWrapper}>
       <motion.article
         className={styles.card}
+        data-cat-target="true"
         ref={ref}
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: index * 0.08 }}
         viewport={{ once: true, margin: "-60px" }}
       >
-        <div className={styles.normalLayer}>{content}</div>
+        <div className={styles.normalLayer}>{renderContent(false)}</div>
         <div
           className={styles.blackboardLayer}
           aria-hidden="true"
         >
-          {content}
+          {renderContent(true)}
         </div>
       </motion.article>
     </div>

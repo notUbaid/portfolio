@@ -33,7 +33,7 @@ import { useMouseReveal } from "@/hooks/useMouseReveal";
 function ExperienceEntry({ item, i }) {
   const { ref } = useMouseReveal();
 
-  const content = (
+  const renderContent = (isBlackboard = false) => (
     <>
       <div className={styles.entryHeader}>
         <h3 className={styles.entryRole}>{item.role}</h3>
@@ -41,13 +41,20 @@ function ExperienceEntry({ item, i }) {
       </div>
       <p className={styles.entryOrg}>{item.org}</p>
       {item.note && <p className={styles.entryNote}>{item.note}</p>}
-      <ul className={styles.entryDetails}>
-        {item.details.map((detail, j) => (
-          <li key={j} className={styles.entryDetail}>
-            {detail}
-          </li>
-        ))}
-      </ul>
+      
+      {isBlackboard && item.wittyDescription ? (
+        <p style={{ fontFamily: "var(--font-sketch-body)", fontSize: "0.95rem", color: "#e0e4e1", lineHeight: "1.6", marginTop: "12px" }}>
+          {item.wittyDescription}
+        </p>
+      ) : (
+        <ul className={styles.entryDetails}>
+          {item.details.map((detail, j) => (
+            <li key={j} className={styles.entryDetail}>
+              {detail}
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 
@@ -61,12 +68,12 @@ function ExperienceEntry({ item, i }) {
     >
       <div className={styles.entryDot} />
       <div className={styles.entryContentWrapper} ref={ref}>
-        <div className={styles.normalLayer}>{content}</div>
+        <div className={styles.normalLayer}>{renderContent(false)}</div>
         <div
           className={styles.blackboardLayer}
           aria-hidden="true"
         >
-          {content}
+          {renderContent(true)}
         </div>
       </div>
     </motion.div>

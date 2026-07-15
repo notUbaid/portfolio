@@ -45,7 +45,7 @@ import { useMouseReveal } from "@/hooks/useMouseReveal";
 function ClientCard({ item, i }) {
   const { ref } = useMouseReveal();
 
-  const content = (
+  const renderContent = (isBlackboard = false) => (
     <>
       <div className={styles.cardTop}>
         <span className={styles.clientLabel}>Client Work</span>
@@ -53,7 +53,11 @@ function ClientCard({ item, i }) {
       </div>
       <h3 className={styles.cardTitle}>{item.name}</h3>
       <p className={styles.cardTagline}>{item.tagline}</p>
-      <p className={styles.cardDescription}>{item.description}</p>
+      <p className={styles.cardDescription}>
+        {isBlackboard && item.wittyDescription
+          ? item.wittyDescription
+          : item.description}
+      </p>
       <div className={styles.cardTech}>
         {item.tech.map((t) => (
           <span key={t} className={styles.techTag}>
@@ -71,18 +75,19 @@ function ClientCard({ item, i }) {
         target="_blank"
         rel="noopener noreferrer"
         className={styles.card}
+        data-cat-target="true"
         ref={ref}
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: i * 0.12 }}
         viewport={{ once: true, margin: "-60px" }}
       >
-        <div className={styles.normalLayer}>{content}</div>
+        <div className={styles.normalLayer}>{renderContent(false)}</div>
         <div
           className={styles.blackboardLayer}
           aria-hidden="true"
         >
-          {content}
+          {renderContent(true)}
         </div>
       </motion.a>
     </div>

@@ -52,6 +52,7 @@
     box-shadow var(--transition-base);
   text-align: center;
   position: relative;
+  min-height: 260px;
 }
 
 .trophy:hover {
@@ -63,6 +64,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  justify-content: center;
 }
 
 .blackboardLayer {
@@ -77,6 +79,7 @@
   transition: clip-path 0.5s ease-out;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   z-index: 2;
   pointer-events: none;
 }
@@ -87,8 +90,12 @@
 }
 
 .blackboardLayer .trophyTitle {
-  color: #f5f5f1;
+  color: var(--accent);
   font-family: var(--font-sketch-heading);
+}
+
+.blackboardLayer .trophyTitle .normalText {
+  color: #f5f5f1;
 }
 
 .blackboardLayer .trophyEvent,

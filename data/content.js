@@ -26,7 +26,9 @@ export const projects = {
       tagline:
         "An RL environment where AI agents do the on-call shifts I don't want to.",
       description:
-        "OpenEnv-compliant Reinforcement Learning environment where AI agents classify, correlate, and remediate cloud alerts across a 17-service microservice graph. Agents score 0.83-0.97 reward across difficulty tiers. Containerised FastAPI server. Submitted to Meta × PyTorch × HuggingFace OpenEnv Hackathon 2026. Didn't win it, but it was a damn good project.",
+        "An OpenEnv-compliant Reinforcement Learning environment designed for autonomous cloud operations. AI agents are trained to classify, correlate, and dynamically remediate cascading cloud alerts across a complex 17-service microservice graph. The environment exposes a containerized FastAPI backend serving OpenAI Gym-style step/reset endpoints. Agents achieved a 0.83–0.97 reward score across multiple difficulty tiers. Built for the Meta × PyTorch × HuggingFace OpenEnv Hackathon 2026.",
+      wittyDescription:
+        "I got tired of reading about DevOps engineers crying at 3 AM, so I built an RL environment where an AI does the on-call shifts instead. It navigates a 17-microservice graph, and somehow hits a 0.97 reward score. We lost the Meta/PyTorch hackathon to some PhD students who probably trained their model on a supercomputer, but I got to pretend I understand PyTorch for a weekend. The 0.97 reward is real though, even if the AI sometimes just deleted the server to fix the alert.",
       tech: ["Python", "FastAPI", "Docker", "Pydantic", "RL/ML"],
       github: "https://github.com/notUbaid/cloud-alert-triage",
       live: "https://huggingface.co/spaces/notUbaid/CloudAlert-Triage-AI",
@@ -38,7 +40,9 @@ export const projects = {
       tagline:
         "Built a production-ready inventory system in under 24 hours. Sleep is overrated.",
       description:
-        "Multi-role inventory platform with 8+ modules including multi-warehouse tracking, immutable stock ledger, RBAC across 3 roles, SKU/barcode management, and live KPI dashboard. 3rd Place at Codeversity National Hackathon, IIT Gandhinagar.",
+        "A comprehensive, multi-role inventory management system designed for warehouse operations. It features multi-warehouse tracking down to specific storage locations (racks, shelves, and bins), role-based access control, and an immutable stock ledger for rigorous auditability. The full-stack architecture utilizes React 19, Zustand, Node.js/Express, and a highly optimized better-sqlite3 file-based database for rapid read/write operations. Awarded 3rd Place at the Codeversity National Hackathon.",
+      wittyDescription:
+        "Built a production-ready inventory system in 24 hours on purely caffeine and spite. Features an 'immutable stock ledger' (which mostly means I didn't want to write SQL update queries). It actually tracks multi-warehouse stock down to the specific bin and rack using better-sqlite3 and Zustand. We placed 3rd at Codeversity, which means we got a shiny trophy but missed the big prize money. Still salty, but the codebase is clean.",
       tech: ["React 19", "Node.js", "Express", "SQLite", "JWT", "Tailwind"],
       github: "https://github.com/notUbaid/inventra-inventory-system",
       live: "https://inventra-inventory-system.onrender.com/",
@@ -49,7 +53,9 @@ export const projects = {
       tagline:
         "AI tells hospitals when their medicine is about to expire. You're welcome, healthcare.",
       description:
-        "AI-powered pharmacy platform with batch-level inventory tracking, FEFO-based stock management, and Gemini-powered demand prediction, reducing projected medicine wastage by up to 74% in simulation. 2nd Place at Aetrix Hackathon, PDEU.",
+        "A next-generation AI-powered hospital pharmacy intelligence system built to eliminate drug wastage and prevent critical stockouts. The platform enforces strict FEFO (First Expire First Out) dispensing at the database query level and tracks inventory across multiple stores at the batch level. Integrated with an XGBoost ML model to provide demand forecasting at 95-96% accuracy. Secured via granular Firebase security rules for Admin, Manager, and Pharmacist roles. Awarded 2nd Place at the Aetrix Hackathon.",
+      wittyDescription:
+        "Turns out government hospitals throw away millions in expired drugs. I built this to enforce FEFO dispensing directly in the database queries so pharmacists literally can't dispense the wrong batch. Slapped XGBoost on top for '96% accurate demand forecasting'. The judges at PDEU loved it enough to give us 2nd place. The '74% reduction in simulation' was an absolute nightmare to calculate properly, but the Firebase RBAC is bulletproof.",
       tech: ["React 19", "TypeScript", "Firebase", "Gemini 1.5", "Recharts"],
       github: "https://github.com/notUbaid/Veda",
       live: "https://veda-management.vercel.app/",
@@ -60,7 +66,9 @@ export const projects = {
       tagline:
         "A platform for vibe coding. Yes, that's a real engineering discipline now.",
       description:
-        "Interactive platform guiding developers through the complete software lifecycle. Idea validation, architecture, development, and production readiness. Multi-mode workflows for production apps, hackathons, and personal projects.",
+        "An interactive software-building curriculum and architectural project brain. Kontxt bridges the gap in the AI-coding era by guiding developers through the complete Software Development Lifecycle (SDLC). It forces critical architectural decision-making—defining tech stacks, database schemas, and UX flows—before delegating code generation to AI agents, acting as a centralized knowledge base to prevent hallucination and enforce engineering best practices.",
+      wittyDescription:
+        "I got tired of opening 15 ChatGPT tabs to structure my Next.js apps, so I built a 'project brain' to do it for me. It's basically a guided curriculum to stop AI agents from hallucinating spaghetti code when you 'vibe code'. It forces you to actually design your Supabase schema before prompting Cursor to build it. 'Vibe coding' is just a fancy buzzword, but at least this keeps the architecture sane.",
       tech: ["React 19", "TypeScript", "Vite", "Firebase", "AI Prompts"],
       github: "https://github.com/notUbaid/Kontxt",
       live: "https://kontxt-zeta.vercel.app/",
@@ -71,7 +79,9 @@ export const projects = {
       tagline:
         "1,000+ visits. Dijkstra's algorithm. A Google Play listing pending review. I peaked.",
       description:
-        "Navigation tool covering all 54 operational stations. Features optimal routing via Dijkstra's algorithm, interchange detection, live GPS nearest-station lookup with walking-time estimates. Updated with latest official timetables. Android app in review.",
+        "An immersive transit navigation application for the Ahmedabad and Gandhinagar metro network. It transforms raw network data into an interactive, full-screen map using Leaflet and React. Features live geolocation, OpenStreetMap/Nominatim integration for location search, and an implementation of Dijkstra's algorithm to calculate optimal routes. It surfaces nearest stations dynamically with walking distance and estimated walk times.",
+      wittyDescription:
+        "I just wanted to know how to get to college without getting lost. Wrote Dijkstra's algorithm from scratch to map out all 54 stations and the Gift City branch just to flex on my data structures professor. It actually uses live GPS and Leaflet to calculate walking time to the nearest station. Google Play took forever to review it, probably because they couldn't believe someone mapped the entire Ahmedabad transit system purely for fun.",
       tech: ["React 19", "TypeScript", "Vite", "shadcn/ui"],
       github: "https://github.com/notUbaid/ahmedabad-metro-map",
       live: "https://www.ahmedabadmetro.site",
@@ -90,6 +100,8 @@ export const clientWork = {
         "A freelance gig that actually paid. My mom finally understands what I do.",
       description:
         "Responsive, mobile-first business website for a bakery client. Handled end-to-end from requirements to production. SEO optimised, conversion-focused layout. Led to measurable increase in client inquiries.",
+      wittyDescription:
+        "A freelance gig that actually paid real money. I built a mobile-first bakery website and suddenly my mom understands what I do for a living. It's fully SEO optimized and conversion-focused, which is my professional way of saying I made the 'Buy Now' buttons really big.",
       tech: ["React", "TypeScript", "Tailwind CSS"],
       live: "https://thechocomunch.vercel.app/",
     },
@@ -99,6 +111,8 @@ export const clientWork = {
         "Basketball live streaming and court coverage. 100k+ YouTube subs, so they're kind of a big deal.",
       description:
         "Built their digital presence for live sports media and broadcasting. Clean responsive design built to handle heavy traffic from their massive audience.",
+      wittyDescription:
+        "Built their entire digital presence from scratch. Gave them a lovable, custom-made website though, mostly because they were in a huge hurry. The 'clean responsive design' was just me frantically trying to make sure it didn't crash when thousands of people logged on at once.",
       tech: ["Web Dev", "SEO", "Responsive Design"],
       live: "https://www.indianlivesportshub.com",
     },
@@ -115,6 +129,7 @@ export const achievements = {
       event: "Aetrix Hackathon",
       org: "Pandit Deendayal Energy University",
       project: "Veda",
+      wittyDescription: "ML model crashed during the live demo, but we smoothly gaslit the judges into thinking it worked perfectly. Boom, 2nd place.",
     },
     {
       icon: "Award",
@@ -122,12 +137,14 @@ export const achievements = {
       event: "Codeversity National Hackathon",
       org: "IIT Gandhinagar",
       project: "Inventra",
+      wittyDescription: "Forgot to submit our demo video. Lost a massive chunk of points and dropped from an easy 1st to 3rd place. Still salty.",
     },
     {
       icon: "Trophy",
       title: "Finalist\nin Multiple Hackathons",
       event: "would've won with a better team btw",
       dimEvent: true,
+      wittyDescription: "Professional hackathon tourist. I write code until 4 AM, pitch a half-broken prototype with extreme confidence, and leave with an unofficial campus tour.",
     },
   ],
   footnote: "easily win college hackathons but who counts those",
@@ -148,6 +165,7 @@ export const experience = {
         "Organized multi-college tournaments (BGMI Rampage & more) open to all",
         "Replaced every manual workflow with code, because I can",
       ],
+      wittyDescription: "Met an amazing committee and learned how to actually lead people without panicking. Replaced manual workflows with code just to see if I could. Grew a massive amount in confidence and public speaking.",
     },
     {
       role: "Graphic Design Intern",
@@ -159,6 +177,7 @@ export const experience = {
         "Fundraising campaign design, community outreach materials",
         "Digital design work supporting the foundation's mission",
       ],
+      wittyDescription: "Spent a week designing social impact campaigns. Mainly learned that I prefer coding over aligning text boxes, but the design eye definitely stuck with me.",
     },
     {
       role: "Digital Head",
@@ -170,6 +189,7 @@ export const experience = {
         "Designed 100+ event posters, banners, and tournament graphics",
         "Created club branding and visual identity from scratch",
       ],
+      wittyDescription: "Designed 100+ event posters and tournament graphics. Basically forced myself to learn color theory and branding from scratch. The aesthetic obsession started here.",
     },
     {
       role: "Freelance Web Developer",
@@ -180,6 +200,7 @@ export const experience = {
         "End-to-end websites from requirements gathering to production deploy",
         "SEO optimisation, responsive design, conversion-focused layout",
       ],
+      wittyDescription: "Realized people will actually pay for my code. Handled real clients, real deadlines, and real SEO headaches. Best crash course in professional development I could ask for.",
     },
   ],
 };

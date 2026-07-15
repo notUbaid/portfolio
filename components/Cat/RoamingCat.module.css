@@ -1,0 +1,64 @@
+.catContainer {
+  position: fixed;
+  z-index: 100;
+  pointer-events: auto; /* Allow hover */
+  transform-origin: center bottom;
+  width: 40px;
+  height: 40px;
+  transition: z-index 0.3s;
+}
+
+.hiddenBehind {
+  z-index: 0 !important; /* Go behind cards */
+}
+
+/* Base animations */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes wag {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(15deg); }
+}
+
+@keyframes sleepBreath {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.05); }
+}
+
+.walking svg {
+  animation: bob 0.3s infinite;
+}
+
+.walking .tail {
+  transform-origin: 30px 25px;
+  animation: wag 0.3s infinite;
+}
+
+.idle .tail {
+  transform-origin: 30px 25px;
+  animation: wag 2s infinite;
+}
+
+.sleeping svg {
+  animation: sleepBreath 2s infinite ease-in-out;
+  transform-origin: bottom center;
+}
+
+.sleeping .head {
+  transform: translateY(5px) rotate(10deg);
+}
+
+.sleeping .eyes {
+  display: none; /* Eyes closed */
+}
+
+.sleeping .sleepEyes {
+  display: block; /* Draw curved lines for closed eyes */
+}
+
+.sleepEyes {
+  display: none;
+}

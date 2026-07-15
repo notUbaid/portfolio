@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
+import { useEffect, useRef } from "react";
 import styles from "./Footer.module.css";
 import { footer } from "@/data/content";
+import { updateWorldBounds } from "@/lib/physics";
 
 function GithubIcon({ size = 18 }) {
   return (
@@ -22,10 +24,38 @@ function LinkedInIcon({ size = 18 }) {
 }
 
 export default function Footer() {
+  const dividerRef = useRef(null);
+
+  useEffect(() => {
+    const updatePhysicsGround = () => {
+      if (dividerRef.current) {
+        const rect = dividerRef.current.getBoundingClientRect();
+        // The ground updates itself based on the divider's DOM position and size
+        updateWorldBounds();
+      }
+    };
+
+    updatePhysicsGround();
+    window.addEventListener("resize", updatePhysicsGround);
+    
+    // Also observe the body height changes just in case content resizes
+    const resizeObserver = new ResizeObserver(() => {
+      updatePhysicsGround();
+    });
+    resizeObserver.observe(document.body);
+
+    return () => {
+      window.removeEventListener("resize", updatePhysicsGround);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   return (
     <footer className={styles.footer} id="footer">
-      <div className={styles.container}>
+      <div className={styles.container} id="physics-container">
         <motion.div
+          id="physics-divider"
+          ref={dividerRef}
           className={styles.divider}
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}

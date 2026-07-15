@@ -69,7 +69,7 @@ import { useMouseReveal } from "@/hooks/useMouseReveal";
 function TrophyCard({ item, i }) {
   const { ref } = useMouseReveal();
 
-  const content = (
+  const renderContent = (isBlackboard = false) => (
     <div className={styles.trophyContent}>
       <h3 className={styles.trophyTitle}>
         {item.title.split('\n').map((line, idx) => (
@@ -78,17 +78,25 @@ function TrophyCard({ item, i }) {
           </span>
         ))}
       </h3>
-      {item.event && (
-        <p 
-          className={styles.trophyEvent}
-          style={item.dimEvent ? { color: "var(--fg-muted)", fontWeight: "normal", fontStyle: "italic", fontSize: "0.9rem" } : {}}
-        >
-          {item.event}
+      {isBlackboard && item.wittyDescription ? (
+        <p className={styles.trophyOrg} style={{ fontFamily: "var(--font-sketch-body)", marginTop: "8px", fontSize: "1rem", lineHeight: "1.4" }}>
+          {item.wittyDescription}
         </p>
-      )}
-      <p className={styles.trophyOrg}>{item.org}</p>
-      {item.project && (
-        <p className={styles.trophyProject}>Project: {item.project}</p>
+      ) : (
+        <>
+          {item.event && (
+            <p 
+              className={styles.trophyEvent}
+              style={item.dimEvent ? { color: "var(--fg-muted)", fontWeight: "normal", fontStyle: "italic", fontSize: "0.9rem" } : {}}
+            >
+              {item.event}
+            </p>
+          )}
+          <p className={styles.trophyOrg}>{item.org}</p>
+          {item.project && (
+            <p className={styles.trophyProject}>Project: {item.project}</p>
+          )}
+        </>
       )}
     </div>
   );
@@ -96,18 +104,19 @@ function TrophyCard({ item, i }) {
   return (
     <motion.div
       className={styles.trophy}
+      data-cat-target="true"
       ref={ref}
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.4, delay: i * 0.12 }}
       viewport={{ once: true, margin: "-60px" }}
     >
-      <div className={styles.normalLayer}>{content}</div>
+      <div className={styles.normalLayer}>{renderContent(false)}</div>
       <div
         className={styles.blackboardLayer}
         aria-hidden="true"
       >
-        {content}
+        {renderContent(true)}
       </div>
     </motion.div>
   );
