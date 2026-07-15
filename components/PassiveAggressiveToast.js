@@ -1,0 +1,121 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import styles from "./PassiveAggressiveToast.module.css";
+
+export default function PassiveAggressiveToast() {
+  const [toasts, setToasts] = useState([]);
+  
+  // Trackers
+  const hasTriggeredIdle = useRef(false);
+  const hasTriggeredSpeed = useRef(false);
+  const idleTimeout = useRef(null);
+  
+  // Speed tracker state
+  const scrollStartTime = useRef(0);
+  const scrollStartY = useRef(0);
+
+  const addToast = (message) => {
+    const id = Date.now();
+    setToasts((prev) => [...prev, { id, message }]);
+    
+    // Auto remove after 6 seconds
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 6000);
+  };
+
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  useEffect(() => {
+    // === Idle Tracker ===
+    const resetIdleTimer = () => {
+      if (hasTriggeredIdle.current) return;
+      
+      clearTimeout(idleTimeout.current);
+      idleTimeout.current = setTimeout(() => {
+        if (!hasTriggeredIdle.current) {
+          addToast("You still there? Should I put on some elevator music?");
+          hasTriggeredIdle.current = true;
+        }
+      }, 60000); // 60 seconds
+    };
+
+    // Initialize
+    resetIdleTimer();
+
+    // === Speed Tracker ===
+    const handleScroll = () => {
+      resetIdleTimer();
+      
+      if (hasTriggeredSpeed.current) return;
+
+      const currentY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      
+      // If they are at the top, reset start time
+      if (currentY < 100) {
+        scrollStartTime.current = Date.now();
+        scrollStartY.current = currentY;
+      }
+      
+      // If they hit the bottom
+      if (currentY > maxScroll - 200) {
+        const timeElapsed = Date.now() - scrollStartTime.current;
+        
+        // If they scrolled from top to bottom in under 3 seconds
+        if (scrollStartY.current < 100 && timeElapsed > 0 && timeElapsed < 3000) {
+          addToast("Whoa, slow down. I spent weeks writing that code and you just scrolled past it in 2 seconds.");
+          hasTriggeredSpeed.current = true;
+        }
+      }
+    };
+
+    const handleInteraction = () => {
+      resetIdleTimer();
+    };
+
+    window.addEventListener("mousemove", handleInteraction);
+    window.addEventListener("keydown", handleInteraction);
+    window.addEventListener("click", handleInteraction);
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      clearTimeout(idleTimeout.current);
+      window.removeEventListener("mousemove", handleInteraction);
+      window.removeEventListener("keydown", handleInteraction);
+      window.removeEventListener("click", handleInteraction);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  if (toasts.length === 0) return null;
+
+  return (
+    <div className={styles.toastWrapper} aria-live="polite">
+      <AnimatePresence>
+        {toasts.map((toast) => (
+          <motion.div
+            key={toast.id}
+            className={styles.toast}
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+          >
+            <button
+              className={styles.closeButton}
+              onClick={() => removeToast(toast.id)}
+              aria-label="Close notification"
+            >
+              ×
+            </button>
+            <p>{toast.message}</p>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+}

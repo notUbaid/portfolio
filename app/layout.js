@@ -4,6 +4,7 @@ import "./globals.css";
 import PhysicsCat from "@/components/Cat/PhysicsCat";
 import ConsoleArt from "@/components/ConsoleArt";
 import ChalkTrail from "@/components/ChalkTrail";
+import PassiveAggressiveToast from "@/components/PassiveAggressiveToast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -133,6 +134,7 @@ export default function RootLayout({ children }) {
         {children}
         <PhysicsCat />
         <ChalkTrail />
+        <PassiveAggressiveToast />
       </body>
     </html>
   );
