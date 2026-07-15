@@ -15,7 +15,7 @@ export default function ConsoleArt() {
     `;
     
     console.log(
-      \`%c\${catArt}\`,
+      `%c${catArt}`,
       "color: #a67c52; font-family: monospace; font-size: 14px; font-weight: bold;"
     );
     console.log(
