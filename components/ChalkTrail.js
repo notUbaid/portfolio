@@ -10,8 +10,8 @@ export default function ChalkTrail() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
-    let width = window.innerWidth;
-    let height = window.innerHeight;
+    let width = Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);
+    let height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
     canvas.width = width;
     canvas.height = height;
 
@@ -29,15 +29,15 @@ export default function ChalkTrail() {
     const handlePointerDown = (e) => {
       if (isInteractiveElement(e.target)) return;
       isDrawing = true;
-      lastX = e.clientX;
-      lastY = e.clientY;
+      lastX = e.pageX;
+      lastY = e.pageY;
     };
 
     const handlePointerMove = (e) => {
       if (!isDrawing) return;
 
-      const x = e.clientX;
-      const y = e.clientY;
+      const x = e.pageX;
+      const y = e.pageY;
 
       drawChalkStroke(lastX, lastY, x, y);
 
@@ -93,8 +93,8 @@ export default function ChalkTrail() {
     };
 
     const handleResize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
+      width = Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);
+      height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
       canvas.width = width;
       canvas.height = height;
     };
@@ -120,11 +120,9 @@ export default function ChalkTrail() {
     <canvas
       ref={canvasRef}
       style={{
-        position: "fixed",
+        position: "absolute",
         top: 0,
         left: 0,
-        width: "100%",
-        height: "100%",
         pointerEvents: "none",
         zIndex: 45, // Underneath sticky nav if any, but above most content
       }}
