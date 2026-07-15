@@ -47,12 +47,31 @@ export const metadata = {
     "React",
     "Next.js",
     "portfolio",
+    "software engineer"
   ],
-  authors: [{ name: "Ubaid Khan" }],
+  authors: [{ name: "Ubaid Khan", url: "https://notubaid.vercel.app" }],
+  creator: "Ubaid Khan",
+  publisher: "Ubaid Khan",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
     title: "Ubaid Khan — Developer, Designer, Club President",
     description:
       "Full-stack developer and UI designer who builds things that actually ship.",
+    url: "https://notubaid.vercel.app",
+    siteName: "Ubaid Khan Portfolio",
     type: "website",
     locale: "en_US",
     images: [
@@ -70,9 +89,11 @@ export const metadata = {
     description:
       "Full-stack developer and UI designer who builds things that actually ship.",
     images: ["/web-app-manifest-512x512.png"],
+    creator: "@notUbaid",
   },
   icons: {
     icon: [
+      { url: "/favicon.ico" },
       { url: "/web-app-manifest-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/web-app-manifest-512x512.png", sizes: "512x512", type: "image/png" },
     ],
@@ -80,12 +101,33 @@ export const metadata = {
       { url: "/web-app-manifest-192x192.png" },
     ],
   },
+  manifest: "/manifest.json",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ubaid Khan",
+  url: "https://notubaid.vercel.app",
+  jobTitle: "Full-Stack Developer & UI Designer",
+  sameAs: [
+    "https://github.com/notUbaid",
+    "https://linkedin.com/in/notubaid"
+  ],
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Institute of Advanced Research, Gandhinagar"
+  }
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceMono.variable} ${caveat.variable} ${handmadeAlphabet.variable} ${amanojaku.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ConsoleArt />
         {children}
         <PhysicsCat />
