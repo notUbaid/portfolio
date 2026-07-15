@@ -41,7 +41,7 @@ export default function PassiveAggressiveToast() {
           addToast("You still there? Should I put on some elevator music?");
           hasTriggeredIdle.current = true;
         }
-      }, 60000); // 60 seconds
+      }, 40000); // 40 seconds
     };
 
     // Initialize
@@ -66,9 +66,10 @@ export default function PassiveAggressiveToast() {
       if (currentY > maxScroll - 200) {
         const timeElapsed = Date.now() - scrollStartTime.current;
         
-        // If they scrolled from top to bottom in under 3 seconds
-        if (scrollStartY.current < 100 && timeElapsed > 0 && timeElapsed < 3000) {
-          addToast("Whoa, slow down. I spent weeks writing that code and you just scrolled past it in 2 seconds.");
+        // If they scrolled from top to bottom in under 10 seconds
+        if (scrollStartY.current < 100 && timeElapsed > 0 && timeElapsed < 10000) {
+          const seconds = (timeElapsed / 1000).toFixed(1);
+          addToast(`Whoa, slow down. I spent weeks writing that code and you just scrolled past it in ${seconds} seconds.`);
           hasTriggeredSpeed.current = true;
         }
       }
