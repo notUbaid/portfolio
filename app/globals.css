@@ -42,6 +42,16 @@
   --transition-slow: 400ms ease;
 }
 
+@media (max-width: 768px) {
+  :root {
+    --space-sm: 0.75rem;
+    --space-md: 1.25rem;
+    --space-lg: 2.5rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+  }
+}
+
 /* ============================================
    RESET & BASE
    ============================================ */
