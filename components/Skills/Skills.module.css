@@ -72,12 +72,34 @@
     color var(--transition-fast);
 }
 
-.skillItem:hover, .skillItem.fallen {
-  border-color: #888;
-  background-color: #1a1a1a;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E");
-  color: transparent;
-  border-style: dashed;
+@media (hover: hover) and (pointer: fine) {
+  .skillItem:hover, .skillItem.fallen {
+    border-color: #888;
+    background-color: #1a1a1a;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E");
+    color: transparent;
+    border-style: dashed;
+  }
+
+  .skillItem:hover:not(.fallen) {
+    transform: translateY(-4px) !important;
+    box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.6);
+  }
+
+  .skillItem:hover::after, .skillItem.fallen::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f5f5f1;
+    font-family: var(--font-sketch-body);
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    white-space: nowrap;
+  }
 }
 
 .skillItem.fallen {
@@ -88,12 +110,15 @@
     color var(--transition-fast);
 }
 
-.skillItem:hover:not(.fallen) {
-  transform: translateY(-4px) !important;
-  box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.6);
+.skillItem.fallen {
+  border-color: #888;
+  background-color: #1a1a1a;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E");
+  color: transparent;
+  border-style: dashed;
 }
 
-.skillItem:hover::after, .skillItem.fallen::after {
+.skillItem.fallen::after {
   content: attr(data-text);
   position: absolute;
   top: 0;

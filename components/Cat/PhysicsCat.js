@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import styles from "./PhysicsCat.module.css";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 // ── Physics Constants ──
 const WALK_SPEED = 0.8;
@@ -94,6 +95,7 @@ const startJump = (c, target) => {
 };
 
 export default function PhysicsCat() {
+  const isMobile = useIsMobile();
   const [frame, setFrame] = useState(null);
   const C = useRef({
     x: 0, state: S.HIDDEN, dir: 1, plat: null,
@@ -109,11 +111,11 @@ export default function PhysicsCat() {
   const prevTs = useRef(0);
 
   useEffect(() => {
-    const onMouse = (e) => {
+    const onPointerMove = (e) => {
       mouse.current.x = e.clientX + window.scrollX;
       mouse.current.y = e.clientY + window.scrollY;
     };
-    window.addEventListener("mousemove", onMouse);
+    window.addEventListener("pointermove", onPointerMove);
 
     const handlePointerUp = () => {
       if (C.current.state === S.DRAGGED) {
@@ -367,14 +369,14 @@ export default function PhysicsCat() {
     rafRef.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("mousemove", onMouse);
+      window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
       cancelAnimationFrame(rafRef.current);
       clearTimers();
     };
   }, []);
 
-  if (!frame) return null;
+  if (isMobile || !frame) return null;
 
   const { x, y, s, d, cl, breed, dragVx } = frame;
   const isClipping = cl > 0 && s !== S.HIDDEN_BEHIND;

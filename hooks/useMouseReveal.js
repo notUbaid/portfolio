@@ -17,12 +17,16 @@ export function useMouseReveal() {
       el.style.setProperty("--y", `${y}px`);
     };
 
-    el.addEventListener("mouseenter", handleMouseEvent);
-    el.addEventListener("mouseleave", handleMouseEvent);
+    el.addEventListener("pointerenter", handleMouseEvent);
+    el.addEventListener("pointerleave", handleMouseEvent);
+    el.addEventListener("pointerdown", handleMouseEvent);
+    el.addEventListener("pointermove", handleMouseEvent);
 
     return () => {
-      el.removeEventListener("mouseenter", handleMouseEvent);
-      el.removeEventListener("mouseleave", handleMouseEvent);
+      el.removeEventListener("pointerenter", handleMouseEvent);
+      el.removeEventListener("pointerleave", handleMouseEvent);
+      el.removeEventListener("pointerdown", handleMouseEvent);
+      el.removeEventListener("pointermove", handleMouseEvent);
     };
   }, []);
 

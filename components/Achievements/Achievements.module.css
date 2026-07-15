@@ -84,9 +84,11 @@
   pointer-events: none;
 }
 
-.trophy:hover .blackboardLayer {
-  clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
-  pointer-events: auto;
+@media (hover: hover) and (pointer: fine) {
+  .trophy:hover .blackboardLayer {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+    pointer-events: auto;
+  }
 }
 
 .blackboardLayer .trophyTitle {
