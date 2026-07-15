@@ -38,7 +38,7 @@ export const projects = {
     {
       name: "Inventra",
       tagline:
-        "Built a production-ready inventory system in under 24 hours. Sleep is overrated.",
+        "Built a production-ready inventory system in under 24 hours. Powered by pure adrenaline.",
       description:
         "A comprehensive, multi-role inventory management system designed for warehouse operations. It features multi-warehouse tracking down to specific storage locations (racks, shelves, and bins), role-based access control, and an immutable stock ledger for rigorous auditability. The full-stack architecture utilizes React 19, Zustand, Node.js/Express, and a highly optimized better-sqlite3 file-based database for rapid read/write operations. Awarded 3rd Place at the Codeversity National Hackathon.",
       wittyDescription:
@@ -94,7 +94,7 @@ export const projects = {
       description:
         "A decentralized, identity-first Zero Trust network layer protocol built in Python. It strictly binds node identities to IPv6 addresses using a custom Public Key Infrastructure (PKI) to neutralize IP spoofing and MITM attacks. Features full simulations of TLS 1.3 handshakes, DNSSEC record signing, and encrypted VPN tunnel derivation (AES-256-GCM). The project also includes a tamper-evident audit system using SHA-256 hash chains, decentralized community governance, and a real-time web dashboard using React and Flask to visualize active network topologies.",
       wittyDescription:
-        "I saw a fancy-looking cybersecurity problem statement and decided to build my first ever cyber project. 36 hours of caffeine-fueled coding later, I ended up writing a custom Public Key Infrastructure, simulating TLS 1.3 handshakes, and building a tamper-evident audit log from scratch. Turns out, enforcing strict Zero Trust architecture is actually pretty fun when you're sleep-deprived and building real-time force-directed graphs to visualize your encrypted VPN tunnels.",
+        "I saw a fancy-looking cybersecurity problem statement and decided to build my first ever cyber project. 36 hours of caffeine-fueled coding later, I ended up writing a custom Public Key Infrastructure, simulating TLS 1.3 handshakes, and building a tamper-evident audit log from scratch. Turns out, enforcing strict Zero Trust architecture is actually pretty fun when you're running on pure adrenaline and building real-time force-directed graphs to visualize your encrypted VPN tunnels.",
       tech: ["Python", "React", "Flask", "Cryptography", "Zero Trust"],
       github: "https://github.com/Destroyerved/WhiteNet",
       status: "Hackathon",
