@@ -39,7 +39,7 @@ export const metadata = {
   metadataBase: new URL("https://notubaid.vercel.app"),
   title: "Ubaid Khan — Developer, Designer, Club President",
   description:
-    "Full-stack developer and UI designer who builds things that actually ship. This is not another AI-generated portfolio.",
+    "Full-stack developer and UI designer who builds things that actually ship.",
   keywords: [
     "Ubaid Khan",
     "full-stack developer",
@@ -52,7 +52,7 @@ export const metadata = {
   openGraph: {
     title: "Ubaid Khan — Developer, Designer, Club President",
     description:
-      "Full-stack developer who builds things that ship. Not another AI-generated portfolio.",
+      "Full-stack developer and UI designer who builds things that actually ship.",
     type: "website",
     locale: "en_US",
   },
@@ -60,7 +60,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Ubaid Khan — Developer, Designer, Club President",
     description:
-      "Full-stack developer who builds things that ship. Not another AI-generated portfolio.",
+      "Full-stack developer and UI designer who builds things that actually ship.",
   },
   icons: {
     icon: [
