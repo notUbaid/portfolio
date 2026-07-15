@@ -55,12 +55,21 @@ export const metadata = {
       "Full-stack developer and UI designer who builds things that actually ship.",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/web-app-manifest-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Ubaid Khan Portfolio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ubaid Khan — Developer, Designer, Club President",
     description:
       "Full-stack developer and UI designer who builds things that actually ship.",
+    images: ["/web-app-manifest-512x512.png"],
   },
   icons: {
     icon: [
