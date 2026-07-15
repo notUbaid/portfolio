@@ -36,6 +36,7 @@ const amanojaku = localFont({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://notubaid.vercel.app"),
   title: "Ubaid Khan — Developer, Designer, Club President",
   description:
     "Full-stack developer and UI designer who builds things that actually ship. This is not another AI-generated portfolio.",
