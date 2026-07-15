@@ -47,6 +47,8 @@
   letter-spacing: 0.05em;
   position: relative;
   z-index: 10;
+  width: fit-content;
+  line-height: 1;
 }
 
 .name {
@@ -207,6 +209,8 @@
   color: var(--fg-subtle);
   font-style: italic;
   letter-spacing: 0.02em;
+  width: fit-content;
+  line-height: 1;
 }
 
 .scrollHint {

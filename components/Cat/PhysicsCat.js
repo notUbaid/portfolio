@@ -56,7 +56,8 @@ function gatherPlatforms() {
 }
 
 function visiblePlatforms(ps) {
-  const lo = window.scrollY + 100;
+  // Never spawn in the first viewport (Hero section)
+  const lo = Math.max(window.scrollY + 100, window.innerHeight);
   const hi = window.scrollY + window.innerHeight + 200;
   return ps.filter(p => p.t > lo && p.t < hi);
 }
