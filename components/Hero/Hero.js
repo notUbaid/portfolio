@@ -79,16 +79,58 @@ export default function Hero() {
     const hour = new Date().getHours();
     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+    const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+    const nightQuotes = [
+      `It's ${timeStr}. Nothing good gets deployed after midnight. You should know this.`,
+      `It's ${timeStr}. If you're reading this, either your servers are down or your life is.`,
+      `Why are you looking at my portfolio at ${timeStr}? Go to sleep. I'm not fixing your bugs.`,
+      `It's ${timeStr}. The only things awake are you, me, and that one memory leak you ignored.`,
+      `If you hire me at ${timeStr}, just know I bill double for insomnia.`
+    ];
+
+    const earlyMorningQuotes = [
+      `It's ${timeStr}. You're either a tech lead with a cold plunge routine or a junior in a crisis.`,
+      `I respect the ${timeStr} hustle, but please tell me you've slept.`,
+      `Waking up at ${timeStr} to look at portfolios is a cry for help.`,
+      `It's ${timeStr}. The sun isn't even up. My code barely is.`,
+      `If you're making hiring decisions at ${timeStr}, please drink some water first.`
+    ];
+
+    const morningQuotes = [
+      `Ah, ${timeStr}. The optimal time to write code you'll hate by 3 PM.`,
+      `Good morning. I hope your coffee is stronger than your production environment.`,
+      `It's ${timeStr}. Time to pretend we know what Agile means.`,
+      `Morning. Let's look at my projects before the daily standup drains our will to live.`,
+      `It's ${timeStr}. You have exactly 8 hours to figure out why the pipeline is failing.`
+    ];
+
+    const afternoonQuotes = [
+      `It's ${timeStr}. You should probably be working instead of looking at my portfolio. I won't tell.`,
+      `Post-lunch productivity slump? Welcome to my portfolio.`,
+      `It's ${timeStr}. Statistically, this is when most people break production.`,
+      `Looking at my portfolio at ${timeStr}? I appreciate the procrastination.`,
+      `It's ${timeStr}. You have exactly 3 hours to pretend you got things done today.`
+    ];
+
+    const eveningQuotes = [
+      `It's ${timeStr}. Production is frozen. Put the keyboard down.`,
+      `Working late? Let's just blame it on DNS and go home.`,
+      `It's ${timeStr}. The optimal hour for questioning your career choices.`,
+      `If you're still working at ${timeStr}, hire me so I can do it faster for you.`,
+      `Evening. The perfect time to deploy on a Friday and immediately regret it.`
+    ];
+
     if (hour >= 0 && hour < 4) {
-      setTagline(`It's ${timeStr}. If you're a recruiter, please go to sleep. If you're an engineer, what broke in production?`);
+      setTagline(getRandom(nightQuotes));
     } else if (hour >= 4 && hour < 7) {
-      setTagline(`You're either horribly jetlagged, or you haven't slept since yesterday. Either way, welcome.`);
+      setTagline(getRandom(earlyMorningQuotes));
     } else if (hour >= 7 && hour < 12) {
-      setTagline(`Another day of converting caffeine into obscure error messages.`);
+      setTagline(getRandom(morningQuotes));
     } else if (hour >= 12 && hour < 17) {
-      setTagline(`You should probably be doing real work right now instead of looking at my portfolio. I won't tell if you don't.`);
+      setTagline(getRandom(afternoonQuotes));
     } else if (hour >= 17 && hour < 24) {
-      setTagline(`Production is frozen for the day. Perfect time to rethink your hiring decisions.`);
+      setTagline(getRandom(eveningQuotes));
     }
   }, []);
 
