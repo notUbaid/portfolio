@@ -57,6 +57,7 @@ export default function Footer() {
           id="physics-divider"
           ref={dividerRef}
           className={styles.divider}
+          data-cat-target="true"
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}

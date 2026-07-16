@@ -102,10 +102,10 @@ export default function PhysicsCat() {
     t: 0, na: 0, clip: CAT_H + 5, life: 0,
     breed: BREEDS[0],
     jumpTarget: null, jumpStartX: 0, jumpStartY: 0, jumpEndX: 0, jumpEndY: 0, jumpDur: 0, yOverride: null,
-    hoverTime: 0, playTime: 0, dragOffsetX: 0, dragOffsetY: 0, dragVx: 0, vy: 0
+    hoverTime: 0, playTime: 0, dragOffsetX: 0, dragOffsetY: 0, dragVx: 0, vy: 0, vx: 0
   });
 
-  const mouse = useRef({ x: -9e3, y: -9e3, lastX: -9e3, lastY: -9e3, speed: 0, speedHist: [] });
+  const mouse = useRef({ x: -9e3, y: -9e3, lastX: -9e3, lastY: -9e3, vx: 0, vy: 0, speed: 0, speedHist: [] });
   const timers = useRef({});
   const rafRef = useRef();
   const prevTs = useRef(0);
@@ -120,7 +120,9 @@ export default function PhysicsCat() {
     const handlePointerUp = () => {
       if (C.current.state === S.DRAGGED) {
         C.current.state = S.FALLING;
-        C.current.vy = 0;
+        // Apply throw inertia (cap speed to prevent flying out of bounds too violently)
+        C.current.vx = Math.max(-35, Math.min(35, mouse.current.vx || 0));
+        C.current.vy = Math.max(-35, Math.min(35, mouse.current.vy || 0));
       }
     };
     window.addEventListener("pointerup", handlePointerUp);
@@ -165,6 +167,8 @@ export default function PhysicsCat() {
       if (mouse.current.lastX !== -9e3) {
         const mdx = mouse.current.x - mouse.current.lastX;
         const mdy = mouse.current.y - mouse.current.lastY;
+        mouse.current.vx = mdx / dt;
+        mouse.current.vy = mdy / dt;
         const spd = Math.hypot(mdx, mdy) / dt;
         mouse.current.speedHist.push(spd);
         if (mouse.current.speedHist.length > 10) mouse.current.speedHist.shift();
@@ -291,27 +295,58 @@ export default function PhysicsCat() {
           c.dragVx = (c.dragVx || 0) * 0.8 + vx * 0.2; // smoothed velocity for dangling angle
           break;
         case S.FALLING:
-          c.vy = (c.vy || 0) + 0.6 * dt; // gravity
+          const prevY = c.yOverride;
+          c.vy = (c.vy || 0) + 0.8 * dt; // gravity
+          c.x += (c.vx || 0) * dt;
           c.yOverride += c.vy * dt;
           
-          // Collision check
-          const allPlats = gatherPlatforms();
-          const vis = visiblePlatforms(allPlats);
-          const below = vis.filter(p => p.l < c.x + CAT_W - 10 && p.r > c.x + 10 && p.t >= c.yOverride - CAT_H - c.vy * dt * 2);
-          if (below.length > 0) {
-            below.sort((a,b) => a.t - b.t);
-            const hit = below[0];
-            if (c.yOverride >= hit.t) {
-               // Landed
+          // Wall bounce (keep cat within screen bounds horizontally)
+          if (c.x < 0) {
+             c.x = 0; 
+             c.vx = -(c.vx || 0) * 0.7; // bounce with dampening
+             c.dir = 1;
+          } else if (c.x + CAT_W > window.innerWidth) {
+             c.x = window.innerWidth - CAT_W; 
+             c.vx = -(c.vx || 0) * 0.7;
+             c.dir = -1;
+          }
+          
+          // Continuous Collision Detection (CCD)
+          if (c.vy > 0) {
+            const allPlats = gatherPlatforms();
+            const vis = visiblePlatforms(allPlats);
+            
+            // Sort platforms by Y so we hit the highest one first if multiple overlap
+            vis.sort((a, b) => a.t - b.t);
+            
+            const hit = vis.find(p => {
+               // Must be horizontally over the platform
+               const overPlat = (c.x + CAT_W - 15 > p.l) && (c.x + 15 < p.r);
+               // Must have passed through the top edge this frame
+               const passedThrough = prevY <= p.t && c.yOverride >= p.t;
+               return overPlat && passedThrough;
+            });
+            
+            if (hit) {
                c.yOverride = null;
                c.plat = hit;
+               
+               // Fix the cat's X position if it landed exactly on the edge
+               c.x = Math.max(hit.l, Math.min(hit.r - CAT_W, c.x));
+               
                c.state = S.IDLE;
                c.t = 0;
-               c.na = 60; // rest a bit after falling
+               c.na = 60; // rest a bit after landing
+               c.vx = 0;
+               c.vy = 0;
+               
+               // Optionally trigger a tiny squish animation by manipulating clip/scale
+               c.clip = Math.min(c.clip, CAT_H); 
             }
           }
           
-          if (c.yOverride > window.scrollY + window.innerHeight + 200) {
+          // Fall off the world (respawn)
+          if (c.yOverride > window.scrollY + window.innerHeight + 400) {
             c.state = S.HIDDEN;
             timers.current.rs = setTimeout(spawn, RESPAWN_MS);
           }

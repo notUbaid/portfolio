@@ -157,6 +157,7 @@ export default function Hero() {
 
         <motion.h1
           className={styles.name}
+          data-cat-target="true"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
