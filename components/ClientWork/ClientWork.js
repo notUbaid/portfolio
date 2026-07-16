@@ -49,7 +49,9 @@ function ClientCard({ item, i }) {
     <>
       <div className={styles.cardTop}>
         <span className={styles.clientLabel}>Client Work</span>
-        <ExternalLink size={16} className={styles.linkIcon} />
+        <a href={item.live} target="_blank" rel="noopener noreferrer" className={styles.cardLink} aria-label="Visit live site">
+          <ExternalLink size={16} className={styles.linkIcon} />
+        </a>
       </div>
       <h3 className={styles.cardTitle}>{item.name}</h3>
       <p className={styles.cardTagline}>
@@ -72,10 +74,7 @@ function ClientCard({ item, i }) {
 
   return (
     <div className={styles.cardWrapper}>
-      <motion.a
-        href={item.live}
-        target="_blank"
-        rel="noopener noreferrer"
+      <motion.div
         className={styles.card}
         data-cat-target="true"
         ref={ref}
@@ -91,7 +90,7 @@ function ClientCard({ item, i }) {
         >
           {renderContent(true)}
         </div>
-      </motion.a>
+      </motion.div>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { motion, useSpring, AnimatePresence } from 'framer-motion'
 import styles from './AdaptiveNav.module.css'
+import { useIsMobile } from "@/hooks/useIsMobile"
 
 const navItems = [
   { label: 'Home', id: 'hero', href: '#hero' },
@@ -16,12 +17,15 @@ const navItems = [
 
 export const AdaptiveNav = () => {
   const [activeSection, setActiveSection] = useState('hero')
+  const [clickedSection, setClickedSection] = useState(null)
   const [expanded, setExpanded] = useState(false)
   const [hovering, setHovering] = useState(false)
   const hoverTimeoutRef = useRef(null)
+  const isMobile = useIsMobile()
 
   // Approximate width for 8 items is ~680px, collapsed width is 110px
   const pillWidth = useSpring(110, { stiffness: 220, damping: 25, mass: 1 })
+  const pillHeight = useSpring(42, { stiffness: 220, damping: 25, mass: 1 })
 
   const visibilityRatios = useRef({});
 
@@ -63,7 +67,8 @@ export const AdaptiveNav = () => {
   useEffect(() => {
     if (hovering) {
       setExpanded(true)
-      pillWidth.set(680)
+      pillWidth.set(isMobile ? 140 : 680)
+      pillHeight.set(isMobile ? 320 : 42)
       if (hoverTimeoutRef.current) {
         clearTimeout(hoverTimeoutRef.current)
       }
@@ -71,6 +76,7 @@ export const AdaptiveNav = () => {
       hoverTimeoutRef.current = setTimeout(() => {
         setExpanded(false)
         pillWidth.set(110) 
+        pillHeight.set(42)
       }, 300) // Faster collapse
     }
 
@@ -79,14 +85,18 @@ export const AdaptiveNav = () => {
         clearTimeout(hoverTimeoutRef.current)
       }
     }
-  }, [hovering, pillWidth])
+  }, [hovering, pillWidth, pillHeight, isMobile])
 
   const handleMouseEnter = () => setHovering(true)
   const handleMouseLeave = () => setHovering(false)
 
   const handleSectionClick = (sectionId, href) => {
     setActiveSection(sectionId)
-    setHovering(false)
+    setClickedSection(sectionId)
+    setTimeout(() => {
+      setClickedSection(null)
+      setHovering(false)
+    }, 200)
     
     window.dispatchEvent(new CustomEvent('nav-scroll'));
     
@@ -108,7 +118,7 @@ export const AdaptiveNav = () => {
         className={styles.navContainer}
         style={{
           width: pillWidth,
-          height: '42px', // Slimmer height
+          height: pillHeight,
           background: 'rgba(25, 25, 25, 0.4)', // Darker, transparent
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
@@ -167,14 +177,14 @@ export const AdaptiveNav = () => {
                     style={{
                       fontSize: '13px',
                       fontWeight: isActive ? 600 : 400,
-                      color: isActive ? 'var(--fg)' : 'var(--fg-muted)',
+                      color: clickedSection === item.id ? 'var(--accent)' : (isActive ? 'var(--fg)' : 'var(--fg-muted)'),
                       letterSpacing: '0.3px',
                     }}
                     onMouseEnter={(e) => {
-                      if (!isActive) e.currentTarget.style.color = 'var(--fg)'
+                      if (!isActive && clickedSection !== item.id) e.currentTarget.style.color = 'var(--fg)'
                     }}
                     onMouseLeave={(e) => {
-                      if (!isActive) e.currentTarget.style.color = 'var(--fg-muted)'
+                      if (!isActive && clickedSection !== item.id) e.currentTarget.style.color = 'var(--fg-muted)'
                     }}
                   >
                     {item.label}

@@ -41,7 +41,7 @@
     transform var(--transition-base),
     box-shadow var(--transition-base);
   position: relative;
-  cursor: pointer;
+  cursor: default;
 }
 
 .cardWrapper:hover .card {
