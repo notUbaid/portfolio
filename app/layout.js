@@ -5,6 +5,7 @@ import PhysicsCat from "@/components/Cat/PhysicsCat";
 import ConsoleArt from "@/components/ConsoleArt";
 import ChalkTrail from "@/components/ChalkTrail";
 import PassiveAggressiveToast from "@/components/PassiveAggressiveToast";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,19 +24,29 @@ const caveat = Caveat({
   subsets: ["latin"],
   variable: "--font-sketch",
   display: "swap",
+  preload: false,
 });
 
 const handmadeAlphabet = localFont({
   src: "../public/fonts/HandmadeAlphabet.otf",
   variable: "--font-handmade",
   display: "swap",
+  preload: false,
 });
 
 const amanojaku = localFont({
   src: "../public/fonts/Amanojaku.otf",
   variable: "--font-amanojaku",
   display: "swap",
+  preload: false,
 });
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata = {
   metadataBase: new URL("https://notubaid.vercel.app"),
@@ -135,6 +146,7 @@ export default function RootLayout({ children }) {
         <PhysicsCat />
         <ChalkTrail />
         <PassiveAggressiveToast />
+        <Analytics />
       </body>
     </html>
   );

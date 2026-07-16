@@ -1,34 +1,26 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export function useMouseReveal() {
   const ref = useRef(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const handleMouseEvent = (e) => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      el.style.setProperty("--x", `${x}px`);
-      el.style.setProperty("--y", `${y}px`);
+    const handleClick = (e) => {
+      // Toggle blackboard mode on click for all devices
+      setIsHovered((prev) => !prev);
     };
 
-    el.addEventListener("pointerenter", handleMouseEvent);
-    el.addEventListener("pointerleave", handleMouseEvent);
-    el.addEventListener("pointerdown", handleMouseEvent);
-    el.addEventListener("pointermove", handleMouseEvent);
+    el.addEventListener("click", handleClick);
 
     return () => {
-      el.removeEventListener("pointerenter", handleMouseEvent);
-      el.removeEventListener("pointerleave", handleMouseEvent);
-      el.removeEventListener("pointerdown", handleMouseEvent);
-      el.removeEventListener("pointermove", handleMouseEvent);
+      el.removeEventListener("click", handleClick);
     };
   }, []);
 
-  return { ref };
+  return { ref, isHovered };
 }

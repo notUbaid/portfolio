@@ -6,6 +6,11 @@ export default function ChalkTrail() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
+    // Disable chalk trail on touch devices/mobile to save battery and prevent scroll interference
+    if (window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768) {
+      return;
+    }
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");

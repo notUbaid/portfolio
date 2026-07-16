@@ -8,13 +8,13 @@ import styles from "./PhysicsCat.module.css";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 // ── Physics Constants ──
-const WALK_SPEED = 0.8;
-const FLEE_SPEED = 3.5;
+const WALK_SPEED = 0.6;
+const FLEE_SPEED = 3.0;
 const CAT_W      = 50;
 const CAT_H      = 40;
-const SCARE_R    = 120;
+const SCARE_R    = 100;
 const RESPAWN_MS = 1200;
-const MAX_LIFE   = 1800; // ~30s auto-hide
+const MAX_LIFE   = 2400; // ~40s auto-hide
 
 // ── State Enum ──
 const S = Object.freeze({
@@ -224,7 +224,7 @@ export default function PhysicsCat() {
           if (c.t > c.na) {
             c.t = 0; const r = Math.random();
             if (r < 0.2) { c.state = S.SITTING; c.na = 300 + Math.random() * 180; }
-            else if (r < 0.3) { c.state = S.SLEEPING; c.na = 400 + Math.random() * 200; }
+            else if (r < 0.3) { c.state = S.SLEEPING; c.na = 500 + Math.random() * 300; }
             else if (r < 0.5) {
               const target = findJumpTarget(c, gatherPlatforms());
               if (target) {
@@ -235,7 +235,7 @@ export default function PhysicsCat() {
               }
             }
             else if (r < 0.8) {
-              c.state = S.WALKING; c.na = 300 + Math.random() * 300;
+              c.state = S.WALKING; c.na = 250 + Math.random() * 250;
               const mid = c.plat.l + c.plat.w / 2;
               if (c.x < mid - 20) c.dir = 1; else if (c.x > mid + 20) c.dir = -1; else c.dir = Math.random() > 0.5 ? 1 : -1;
             } else {

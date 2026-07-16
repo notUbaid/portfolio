@@ -9,8 +9,9 @@
   width: 50px;
   height: 40px;
   z-index: 100;
-  pointer-events: none;
+  pointer-events: auto;
   will-change: left, top, clip-path;
+  cursor: grab;
 }
 
 /* ===== SVG ===== */
@@ -58,7 +59,7 @@
    STATE: IDLE — standing, looking around
    ========================================= */
 .idle .tail {
-  animation: tailSwish 3s infinite ease-in-out;
+  animation: tailSwish 4.5s infinite ease-in-out;
 }
 .idle .head {
   animation: headLook 8s infinite ease-in-out, earTwitch 6s infinite;
@@ -94,22 +95,22 @@
    STATE: WALKING — patrol on surface
    ========================================= */
 .walking .catSvg {
-  animation: walkBob 0.4s infinite alternate ease-in-out;
+  animation: walkBob 0.5s infinite alternate ease-in-out;
 }
 .walking .tail {
-  animation: tailWalk 0.5s infinite alternate ease-in-out;
+  animation: tailWalk 0.6s infinite alternate ease-in-out;
 }
 .walking .frontLegNear {
-  animation: legStep 0.4s infinite alternate ease-in-out;
+  animation: legStep 0.5s infinite alternate ease-in-out;
 }
 .walking .backLegNear {
-  animation: legStep 0.4s infinite alternate-reverse ease-in-out;
+  animation: legStep 0.5s infinite alternate-reverse ease-in-out;
 }
 .walking .frontLegFar {
-  animation: legStep 0.4s infinite alternate-reverse ease-in-out;
+  animation: legStep 0.5s infinite alternate-reverse ease-in-out;
 }
 .walking .backLegFar {
-  animation: legStep 0.4s infinite alternate ease-in-out;
+  animation: legStep 0.5s infinite alternate ease-in-out;
 }
 
 /* =========================================
@@ -346,12 +347,12 @@
 
 @keyframes walkBob {
   from { transform: translateY(0); }
-  to   { transform: translateY(-3px); }
+  to   { transform: translateY(-2px); }
 }
 
 @keyframes breathe {
   0%, 100% { transform: translateY(8px) scaleY(0.8) scaleX(1.1); }
-  50%      { transform: translateY(8px) scaleY(0.85) scaleX(1.12); }
+  50%      { transform: translateY(8px) scaleY(0.88) scaleX(1.13); }
 }
 
 @keyframes startleJump {

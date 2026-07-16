@@ -60,7 +60,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .skillItem:hover, .skillItem.fallen {
+  .skillPillContainer:hover .skillItem, .skillItem.fallen {
     border-color: #888;
     background-color: #1a1a1a;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.25'/%3E%3C/svg%3E");
@@ -68,12 +68,12 @@
     border-style: dashed;
   }
 
-  .skillItem:hover:not(.fallen) {
+  .skillPillContainer:hover .skillItem:not(.fallen) {
     transform: translateY(-4px) !important;
     box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.6);
   }
 
-  .skillItem:hover::after, .skillItem.fallen::after {
+  .skillPillContainer:hover .skillItem::after, .skillItem.fallen::after {
     content: attr(data-text);
     position: absolute;
     top: 0;

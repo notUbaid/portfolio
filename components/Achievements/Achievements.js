@@ -68,7 +68,7 @@ export default function Achievements() {
 import { useMouseReveal } from "@/hooks/useMouseReveal";
 
 function TrophyCard({ item, i }) {
-  const { ref } = useMouseReveal();
+  const { ref, isHovered } = useMouseReveal();
 
   const renderContent = (isBlackboard = false) => (
     <div className={styles.trophyContent}>
@@ -114,7 +114,7 @@ function TrophyCard({ item, i }) {
     >
       <div className={styles.normalLayer}>{renderContent(false)}</div>
       <div
-        className={styles.blackboardLayer}
+        className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
         aria-hidden="true"
       >
         {renderContent(true)}

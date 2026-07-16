@@ -15,7 +15,7 @@ function GithubIcon({ size = 18 }) {
 import { useMouseReveal } from "@/hooks/useMouseReveal";
 
 export default function ProjectCard({ project, index }) {
-  const { ref } = useMouseReveal();
+  const { ref, isHovered } = useMouseReveal();
 
   const renderContent = (isBlackboard) => (
     <>
@@ -81,7 +81,7 @@ export default function ProjectCard({ project, index }) {
       >
         <div className={styles.normalLayer}>{renderContent(false)}</div>
         <div
-          className={styles.blackboardLayer}
+          className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
           aria-hidden="true"
         >
           {renderContent(true)}

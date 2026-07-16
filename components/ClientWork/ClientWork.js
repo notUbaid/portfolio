@@ -43,7 +43,7 @@ export default function ClientWork() {
 import { useMouseReveal } from "@/hooks/useMouseReveal";
 
 function ClientCard({ item, i }) {
-  const { ref } = useMouseReveal();
+  const { ref, isHovered } = useMouseReveal();
 
   const renderContent = (isBlackboard = false) => (
     <>
@@ -84,7 +84,7 @@ function ClientCard({ item, i }) {
       >
         <div className={styles.normalLayer}>{renderContent(false)}</div>
         <div
-          className={styles.blackboardLayer}
+          className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
           aria-hidden="true"
         >
           {renderContent(true)}
