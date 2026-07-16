@@ -88,8 +88,12 @@ export default function Footer() {
             className={styles.socialLink}
             aria-label="GitHub"
           >
-            <GithubIcon size={18} />
-            <span>GitHub</span>
+            <div className={styles.linkInner}>
+              <span className={styles.iconContainer}>
+                <GithubIcon size={18} />
+              </span>
+              <span className={styles.textContainer}>GitHub</span>
+            </div>
           </a>
           <a
             href={footer.linkedin}
@@ -98,16 +102,24 @@ export default function Footer() {
             className={styles.socialLink}
             aria-label="LinkedIn"
           >
-            <LinkedInIcon size={18} />
-            <span>LinkedIn</span>
+            <div className={styles.linkInner}>
+              <span className={styles.iconContainer}>
+                <LinkedInIcon size={18} />
+              </span>
+              <span className={styles.textContainer}>LinkedIn</span>
+            </div>
           </a>
           <a
             href={`mailto:${footer.email}`}
             className={styles.socialLink}
             aria-label="Email"
           >
-            <Mail size={18} aria-hidden="true" />
-            <span>Say hi</span>
+            <div className={styles.linkInner}>
+              <span className={styles.iconContainer}>
+                <Mail size={18} aria-hidden="true" />
+              </span>
+              <span className={styles.textContainer}>Say hi</span>
+            </div>
           </a>
         </motion.div>
 

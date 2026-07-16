@@ -133,6 +133,8 @@ const jsonLd = {
   }
 };
 
+import { AdaptiveNav } from "@/components/ui/AdaptiveNav";
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceMono.variable} ${caveat.variable} ${handmadeAlphabet.variable} ${amanojaku.variable}`}>
@@ -141,6 +143,7 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <AdaptiveNav />
         <ConsoleArt />
         {children}
         <PhysicsCat />

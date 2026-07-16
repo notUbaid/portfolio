@@ -15,6 +15,9 @@ export default function PassiveAggressiveToast() {
   // Speed tracker state
   const scrollStartTime = useRef(0);
   const scrollStartY = useRef(0);
+  
+  const isNavScroll = useRef(false);
+  const navScrollTimeout = useRef(null);
 
   const addToast = (message) => {
     const id = Date.now();
@@ -51,7 +54,7 @@ export default function PassiveAggressiveToast() {
     const handleScroll = () => {
       resetIdleTimer();
       
-      if (hasTriggeredSpeed.current) return;
+      if (hasTriggeredSpeed.current || isNavScroll.current) return;
 
       const currentY = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
@@ -79,17 +82,30 @@ export default function PassiveAggressiveToast() {
       resetIdleTimer();
     };
 
+    const handleNavScroll = () => {
+      isNavScroll.current = true;
+      scrollStartY.current = 1000; // invalidate speed tracker
+      
+      clearTimeout(navScrollTimeout.current);
+      navScrollTimeout.current = setTimeout(() => {
+        isNavScroll.current = false;
+      }, 3000);
+    };
+
     window.addEventListener("mousemove", handleInteraction);
     window.addEventListener("keydown", handleInteraction);
     window.addEventListener("click", handleInteraction);
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("nav-scroll", handleNavScroll);
 
     return () => {
       clearTimeout(idleTimeout.current);
+      clearTimeout(navScrollTimeout.current);
       window.removeEventListener("mousemove", handleInteraction);
       window.removeEventListener("keydown", handleInteraction);
       window.removeEventListener("click", handleInteraction);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("nav-scroll", handleNavScroll);
     };
   }, []);
 
