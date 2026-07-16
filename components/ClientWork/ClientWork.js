@@ -52,7 +52,9 @@ function ClientCard({ item, i }) {
         <ExternalLink size={16} className={styles.linkIcon} />
       </div>
       <h3 className={styles.cardTitle}>{item.name}</h3>
-      <p className={styles.cardTagline}>{item.tagline}</p>
+      <p className={styles.cardTagline}>
+        {isBlackboard && item.wittyTagline ? item.wittyTagline : item.tagline}
+      </p>
       <p className={styles.cardDescription}>
         {isBlackboard && item.wittyDescription
           ? item.wittyDescription

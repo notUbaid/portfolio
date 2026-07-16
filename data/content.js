@@ -108,23 +108,23 @@ export const clientWork = {
   items: [
     {
       name: "The Choco Munch",
-      tagline:
-        "A freelance gig that actually paid. My mom finally understands what I do.",
+      tagline: "Custom business website for a local bakery.",
+      wittyTagline: "A freelance gig that actually paid real money.",
       description:
-        "Responsive, mobile-first business website for a bakery client. Handled end-to-end from requirements to production. SEO optimised, conversion-focused layout. Led to measurable increase in client inquiries.",
+        "Handled end-to-end from requirements to production. Responsive, mobile-first, SEO optimized, and conversion-focused layout. Led to a measurable increase in client inquiries.",
       wittyDescription:
-        "A freelance gig that actually paid real money. I built a mobile-first bakery website and suddenly my mom understands what I do for a living. It's fully SEO optimized and conversion-focused, which is my professional way of saying I made the 'Buy Now' buttons really big.",
+        "I built this site and suddenly my mom understands what I do for a living. I told the client it's 'conversion-focused', which is my professional way of saying I made the 'Buy Now' buttons really big.",
       tech: ["React", "TypeScript", "Tailwind CSS"],
       live: "https://thechocomunch.vercel.app/",
     },
     {
       name: "Indian Live Sports Hub",
-      tagline:
-        "Basketball live streaming and court coverage. 100k+ YouTube subs, so they're kind of a big deal.",
+      tagline: "Digital presence and live streaming portal for sports broadcasting.",
+      wittyTagline: "100k+ YouTube subs, so they're kind of a big deal.",
       description:
-        "Built their digital presence for live sports media and broadcasting. Clean responsive design built to handle heavy traffic from their massive audience.",
+        "Built their digital presence from scratch to handle heavy traffic from their massive audience. Features a clean, responsive design tailored for live sports media.",
       wittyDescription:
-        "Built their entire digital presence from scratch. Gave them a lovable, custom-made website though, mostly because they were in a huge hurry. The 'clean responsive design' was just me frantically trying to make sure it didn't crash when thousands of people logged on at once.",
+        "They were in a huge hurry, so I threw together a lovable, custom-made website. The 'clean responsive design' was just me frantically trying to make sure it didn't crash when thousands of people logged on at once.",
       tech: ["Web Dev", "SEO", "Responsive Design"],
       live: "https://www.indianlivesportshub.com",
     },

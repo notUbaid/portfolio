@@ -112,6 +112,8 @@ export default function PhysicsCat() {
 
   useEffect(() => {
     const onPointerMove = (e) => {
+      mouse.current.clientX = e.clientX;
+      mouse.current.clientY = e.clientY;
       mouse.current.x = e.clientX + window.scrollX;
       mouse.current.y = e.clientY + window.scrollY;
     };
@@ -159,6 +161,11 @@ export default function PhysicsCat() {
       if (!prevTs.current) prevTs.current = now;
       const dt = Math.min((now - prevTs.current) / 16.67, 3);
       prevTs.current = now;
+
+      if (mouse.current.clientX !== undefined) {
+        mouse.current.x = mouse.current.clientX + window.scrollX;
+        mouse.current.y = mouse.current.clientY + window.scrollY;
+      }
 
       const c = C.current;
       c.t += dt; c.life += dt;
