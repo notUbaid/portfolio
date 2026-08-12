@@ -166,6 +166,12 @@
   color: var(--fg-muted);
 }
 
+@media (min-width: 2000px) {
+  .trophies {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .trophies {
     grid-template-columns: 1fr;
