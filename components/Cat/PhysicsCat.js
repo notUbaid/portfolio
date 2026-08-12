@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./PhysicsCat.module.css";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { playMeowSound, playPurrSound, playJumpSound } from "@/lib/audio";
+import { playMeowSound, playPurrSound, startPurrSound, stopPurrSound, playJumpSound, playDropSound, playCatMeow } from "@/lib/audio";
 
 // ── Physics Constants ──
 const WALK_SPEED = 0.6;
@@ -222,7 +222,7 @@ export default function PhysicsCat() {
            if (c.hoverTime > 30 && c.state !== S.PURRING) { 
              c.state = S.PURRING; 
              c.t = 0; 
-             playPurrSound(); 
+             startPurrSound(); 
            }
         } else {
            c.hoverTime = 0;
@@ -235,7 +235,8 @@ export default function PhysicsCat() {
                c.state = S.PLAYING; 
                c.t = 0; 
                c.na = 120 + Math.random() * 60; 
-               playMeowSound(); 
+               stopPurrSound();
+               playCatMeow("chirp"); 
              }
            } else {
              c.playTime = 0;
@@ -252,7 +253,7 @@ export default function PhysicsCat() {
           if (c.clip <= 0) { c.clip = 0; c.state = S.IDLE; c.t = 0; c.na = 30 + Math.random() * 60; }
           break;
         case S.IDLE:
-          if (isScared()) { c.state = S.STARTLED; c.t = 0; break; }
+          if (isScared()) { stopPurrSound(); c.state = S.STARTLED; c.t = 0; break; }
           if (c.t > c.na) {
             c.t = 0; const r = Math.random();
             if (r < 0.2) { c.state = S.SITTING; c.na = 300 + Math.random() * 180; }
@@ -278,14 +279,14 @@ export default function PhysicsCat() {
           }
           break;
         case S.SITTING:
-          if (isScared(SCARE_R * 0.85)) { c.state = S.STARTLED; c.t = 0; break; }
-          if (c.t > c.na) { c.state = S.IDLE; c.t = 0; c.na = 30 + Math.random() * 60; }
+          if (isScared(SCARE_R * 0.85)) { stopPurrSound(); c.state = S.STARTLED; c.t = 0; break; }
+          if (c.t > c.na) { c.state = S.IDLE; c.t = 0; c.na = 60 + Math.random() * 60; }
           break;
         case S.PURRING:
-          if (isScared()) { c.state = S.STARTLED; c.t = 0; break; }
+          if (isScared()) { stopPurrSound(); c.state = S.STARTLED; c.t = 0; break; }
           const catY = c.yOverride !== null ? c.yOverride - CAT_H : (c.plat ? c.plat.t - CAT_H : 0);
           const mDist = Math.hypot(mouse.current.x - (c.x + CAT_W/2), mouse.current.y - (catY + CAT_H/2));
-          if (mDist > 60 || mouse.current.speed > 5) { c.state = S.IDLE; c.t = 0; c.na = 30; }
+          if (mDist > 60 || mouse.current.speed > 5) { stopPurrSound(); c.state = S.IDLE; c.t = 0; c.na = 30; }
           break;
         case S.PLAYING:
           if (isScared(SCARE_R, 15)) { c.state = S.STARTLED; c.t = 0; break; }
@@ -466,6 +467,8 @@ export default function PhysicsCat() {
     // Only allow drag if not hidden
     if (s === S.HIDDEN || s === S.HIDING || s === S.HIDDEN_BEHIND || s === S.CLIMBING || s === S.PEEKING) return;
     
+    playCatMeow("pickup");
+    stopPurrSound();
     C.current.state = S.DRAGGED;
     C.current.t = 0;
     const rect = e.currentTarget.getBoundingClientRect();

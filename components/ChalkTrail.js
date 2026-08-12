@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { playChalkScratch, stopChalkScratch } from "@/lib/audio";
 
 export default function ChalkTrail() {
   const canvasRef = useRef(null);
@@ -52,7 +53,9 @@ export default function ChalkTrail() {
 
       const x = e.clientX;
       const y = e.clientY;
+      const distance = Math.hypot(x - lastX, y - lastY);
 
+      playChalkScratch(distance);
       drawChalkStroke(lastX, lastY, x, y);
 
       lastX = x;
@@ -62,6 +65,7 @@ export default function ChalkTrail() {
 
     const handlePointerUp = () => {
       isDrawing = false;
+      stopChalkScratch();
     };
 
     const drawChalkStroke = (x1, y1, x2, y2) => {
