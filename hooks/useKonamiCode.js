@@ -36,9 +36,11 @@ export function useKonamiCode(onSuccess) {
 
         // Trigger physics blocks drop
         if (typeof document !== "undefined") {
-          const pills = document.querySelectorAll("[data-text]");
+          const pills = document.querySelectorAll("[data-text]:not(.fallen)");
           pills.forEach((pill) => {
-            if (pill instanceof HTMLElement) pill.click();
+            if (pill instanceof HTMLElement && !pill.classList.contains("fallen")) {
+              pill.click();
+            }
           });
         }
 

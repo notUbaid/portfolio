@@ -191,7 +191,7 @@
   border-color: #888;
   background-color: #1a1a1a;
   background-image: var(--noise-pattern);
-  color: transparent;
+  color: transparent !important;
   border-style: dashed;
 }
 
