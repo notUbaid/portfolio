@@ -39,7 +39,7 @@ export function useKonamiCode(onSuccess) {
           const pills = document.querySelectorAll("[data-text]:not(.fallen)");
           pills.forEach((pill, idx) => {
             if (pill instanceof HTMLElement && !pill.classList.contains("fallen")) {
-              setTimeout(() => pill.click(), idx * 30);
+              setTimeout(() => pill.click(), idx * 50);
             }
           });
         }
