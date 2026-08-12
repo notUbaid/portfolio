@@ -15,13 +15,28 @@ const navItems = [
   { label: 'Contact', id: 'footer', href: '#footer' },
 ]
 
+import { toggleAudioMute, getAudioMuted, playClickSound } from "@/lib/audio"
+
 export const AdaptiveNav = () => {
   const [activeSection, setActiveSection] = useState('hero')
   const [clickedSection, setClickedSection] = useState(null)
   const [expanded, setExpanded] = useState(false)
   const [hovering, setHovering] = useState(false)
+  const [isMuted, setIsMuted] = useState(() => typeof window !== "undefined" ? getAudioMuted() : false)
   const hoverTimeoutRef = useRef(null)
   const isMobile = useIsMobile()
+
+  const handleToggleSound = (e) => {
+    e.stopPropagation()
+    const muted = toggleAudioMute()
+    setIsMuted(muted)
+  }
+
+  const handleOpenCmdK = (e) => {
+    e.stopPropagation()
+    playClickSound()
+    window.dispatchEvent(new CustomEvent("open-cmd-palette"))
+  }
 
   // Approximate width for 8 items is ~680px, collapsed width is 110px
   const pillWidth = useSpring(110, { stiffness: 220, damping: 25, mass: 1 })
@@ -46,7 +61,6 @@ export const AdaptiveNav = () => {
         }
       });
       
-      // Fallback: if we somehow don't have a max ratio > 0, we shouldn't change
       if (bestMatch && maxRatio > 0 && !hovering) {
         setActiveSection(bestMatch);
       }
@@ -64,33 +78,27 @@ export const AdaptiveNav = () => {
     return () => observer.disconnect();
   }, [hovering]);
 
-  useEffect(() => {
-    if (hovering) {
-      setExpanded(true)
-      pillWidth.set(isMobile ? 140 : 680)
-      pillHeight.set(isMobile ? 320 : 42)
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-    } else {
-      hoverTimeoutRef.current = setTimeout(() => {
-        setExpanded(false)
-        pillWidth.set(110) 
-        pillHeight.set(42)
-      }, 300) // Faster collapse
+  const handleMouseEnter = () => {
+    setHovering(true);
+    setExpanded(true);
+    pillWidth.set(isMobile ? 140 : 680);
+    pillHeight.set(isMobile ? 320 : 42);
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
     }
+  };
 
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-    }
-  }, [hovering, pillWidth, pillHeight, isMobile])
-
-  const handleMouseEnter = () => setHovering(true)
-  const handleMouseLeave = () => setHovering(false)
+  const handleMouseLeave = () => {
+    setHovering(false);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setExpanded(false);
+      pillWidth.set(110);
+      pillHeight.set(42);
+    }, 300);
+  };
 
   const handleSectionClick = (sectionId, href) => {
+    playClickSound()
     setActiveSection(sectionId)
     setClickedSection(sectionId)
     setTimeout(() => {
@@ -119,7 +127,7 @@ export const AdaptiveNav = () => {
         style={{
           width: pillWidth,
           height: pillHeight,
-          background: 'rgba(25, 25, 25, 0.4)', // Darker, transparent
+          background: 'rgba(25, 25, 25, 0.4)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
           border: '1px solid rgba(255, 255, 255, 0.08)',
@@ -168,7 +176,7 @@ export const AdaptiveNav = () => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -5 }}
                     transition={{ 
-                      delay: index * 0.03, // Faster stagger
+                      delay: index * 0.03,
                       duration: 0.2,
                       ease: 'easeOut'
                     }}
@@ -195,6 +203,23 @@ export const AdaptiveNav = () => {
           )}
         </div>
       </motion.nav>
+
+      <div className={styles.navTools}>
+        <button
+          onClick={handleOpenCmdK}
+          className={styles.cmdBtn}
+          title="Command Palette (Cmd + K)"
+        >
+          ⌘K
+        </button>
+        <button
+          onClick={handleToggleSound}
+          className={styles.soundBtn}
+          title={isMuted ? "Unmute Sound" : "Mute Sound"}
+        >
+          {isMuted ? "🔇" : "🔊"}
+        </button>
+      </div>
     </div>
   )
 }

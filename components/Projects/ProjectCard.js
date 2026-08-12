@@ -13,6 +13,9 @@ function GithubIcon({ size = 18 }) {
 }
 
 import { useMouseReveal } from "@/hooks/useMouseReveal";
+import TiltCard from "@/components/ui/TiltCard";
+import TextScramble from "@/components/ui/TextScramble";
+import Magnetic from "@/components/ui/Magnetic";
 
 export default function ProjectCard({ project, index }) {
   const { ref, isHovered } = useMouseReveal();
@@ -25,34 +28,40 @@ export default function ProjectCard({ project, index }) {
         </div>
         <div className={styles.cardLinks}>
           {project.github && (
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.cardLink}
-              aria-label={`${project.name} GitHub`}
-            >
-              <GithubIcon size={18} />
-            </a>
+            <Magnetic strength={0.2}>
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.cardLink}
+                aria-label={`${project.name} GitHub`}
+              >
+                <GithubIcon size={18} />
+              </a>
+            </Magnetic>
           )}
           {project.live && (
-            <a
-              href={project.live}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.cardLink}
-              aria-label={`${project.name} ${project.liveLabel || "Live Demo"}`}
-            >
-              <ExternalLink size={18} aria-hidden="true" />
-              {project.liveLabel && (
-                <span className={styles.linkLabel}>{project.liveLabel}</span>
-              )}
-            </a>
+            <Magnetic strength={0.2}>
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.cardLink}
+                aria-label={`${project.name} ${project.liveLabel || "Live Demo"}`}
+              >
+                <ExternalLink size={18} aria-hidden="true" />
+                {project.liveLabel && (
+                  <span className={styles.linkLabel}>{project.liveLabel}</span>
+                )}
+              </a>
+            </Magnetic>
           )}
         </div>
       </div>
 
-      <h3 className={styles.cardTitle}>{project.name}</h3>
+      <h3 className={styles.cardTitle}>
+        <TextScramble text={project.name} />
+      </h3>
       <p className={styles.cardTagline}>{project.tagline}</p>
       <p className={styles.cardDescription}>
         {isBlackboard && project.wittyDescription ? project.wittyDescription : project.description}
@@ -70,23 +79,25 @@ export default function ProjectCard({ project, index }) {
 
   return (
     <div className={styles.cardWrapper}>
-      <motion.article
-        className={styles.card}
-        data-cat-target="true"
-        ref={ref}
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.08 }}
-        viewport={{ once: true, margin: "-60px" }}
-      >
-        <div className={styles.normalLayer}>{renderContent(false)}</div>
-        <div
-          className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
-          aria-hidden="true"
+      <TiltCard maxTilt={8}>
+        <motion.article
+          className={styles.card}
+          data-cat-target="true"
+          ref={ref}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.08 }}
+          viewport={{ once: true, margin: "-60px" }}
         >
-          {renderContent(true)}
-        </div>
-      </motion.article>
+          <div className={styles.normalLayer}>{renderContent(false)}</div>
+          <div
+            className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
+            aria-hidden="true"
+          >
+            {renderContent(true)}
+          </div>
+        </motion.article>
+      </TiltCard>
     </div>
   );
 }

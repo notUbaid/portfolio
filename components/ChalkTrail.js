@@ -15,8 +15,8 @@ export default function ChalkTrail() {
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
-    let width = Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);
-    let height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     canvas.width = width;
     canvas.height = height;
 
@@ -24,30 +24,40 @@ export default function ChalkTrail() {
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
+    let animId = null;
+    let idleFrames = 0;
+    const MAX_IDLE_FRAMES = 50; // Fade frames after releasing mouse before pausing RAF
 
-    // We only want to draw if the user is clicking on empty space
-    // not interacting with cards, links, or buttons
     const isInteractiveElement = (element) => {
       return element.closest("a, button, input, textarea, select, details, [role='button'], .ProjectCard, .SkillItem, .experience, .blackboardLayer");
+    };
+
+    const startAnimation = () => {
+      idleFrames = 0;
+      if (!animId) {
+        animId = requestAnimationFrame(fadeOut);
+      }
     };
 
     const handlePointerDown = (e) => {
       if (isInteractiveElement(e.target)) return;
       isDrawing = true;
-      lastX = e.pageX;
-      lastY = e.pageY;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      startAnimation();
     };
 
     const handlePointerMove = (e) => {
       if (!isDrawing) return;
 
-      const x = e.pageX;
-      const y = e.pageY;
+      const x = e.clientX;
+      const y = e.clientY;
 
       drawChalkStroke(lastX, lastY, x, y);
 
       lastX = x;
       lastY = y;
+      startAnimation();
     };
 
     const handlePointerUp = () => {
@@ -55,7 +65,6 @@ export default function ChalkTrail() {
     };
 
     const drawChalkStroke = (x1, y1, x2, y2) => {
-      // Create a chalk-like texture by drawing multiple semi-transparent offset lines
       const distance = Math.hypot(x2 - x1, y2 - y1);
       const angle = Math.atan2(y2 - y1, x2 - x1);
 
@@ -65,14 +74,12 @@ export default function ChalkTrail() {
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
-      // Draw standard line
       ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
       ctx.beginPath();
       ctx.moveTo(x1, y1);
       ctx.lineTo(x2, y2);
       ctx.stroke();
 
-      // Add "dust" particles along the stroke
       for (let i = 0; i < distance; i += 2) {
         if (Math.random() > 0.5) {
           const px = x1 + Math.cos(angle) * i + (Math.random() - 0.5) * 8;
@@ -88,20 +95,44 @@ export default function ChalkTrail() {
       ctx.restore();
     };
 
-    // Fade out effect
     const fadeOut = () => {
+      if (document.hidden) {
+        animId = null;
+        return;
+      }
+
       ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; // Fade speed
+      ctx.fillStyle = "rgba(0, 0, 0, 0.06)";
       ctx.fillRect(0, 0, width, height);
       ctx.globalCompositeOperation = "source-over";
-      requestAnimationFrame(fadeOut);
+
+      if (isDrawing) {
+        idleFrames = 0;
+        animId = requestAnimationFrame(fadeOut);
+      } else {
+        idleFrames++;
+        if (idleFrames < MAX_IDLE_FRAMES) {
+          animId = requestAnimationFrame(fadeOut);
+        } else {
+          // Clear completely and stop RAF to free GPU/CPU
+          ctx.clearRect(0, 0, width, height);
+          animId = null;
+        }
+      }
     };
 
     const handleResize = () => {
-      width = Math.max(document.body.scrollWidth, document.documentElement.scrollWidth, window.innerWidth);
-      height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+      width = window.innerWidth;
+      height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.hidden && animId) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
     };
 
     window.addEventListener("pointerdown", handlePointerDown);
@@ -109,15 +140,16 @@ export default function ChalkTrail() {
     window.addEventListener("pointerup", handlePointerUp);
     window.addEventListener("pointercancel", handlePointerUp);
     window.addEventListener("resize", handleResize);
-
-    requestAnimationFrame(fadeOut);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      if (animId) cancelAnimationFrame(animId);
       window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
       window.removeEventListener("pointercancel", handlePointerUp);
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -125,13 +157,16 @@ export default function ChalkTrail() {
     <canvas
       ref={canvasRef}
       style={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
+        width: "100vw",
+        height: "100vh",
         pointerEvents: "none",
-        zIndex: 45, // Underneath sticky nav if any, but above most content
+        zIndex: 45,
       }}
       aria-hidden="true"
     />
   );
 }
+

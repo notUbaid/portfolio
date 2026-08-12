@@ -40,6 +40,7 @@
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 400ms ease;
+  --noise-pattern: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADALWYzAAAAElBMVEUAAAD8/Pz09PT4+Pj29vb///89zM+CAAAAB3RSTlMA389vXyDgW33hOAAAAD5JREFUOMtjYBgFoyEwGgKjITAYAoMhMNqGQRDAwMBQA8R1QNxABQxVQLwOiGuAeD0QrwPiegjA0g5GQ2A0BEZDYDQERkMAGd1h4Z8OvhMAAAAASUVORK5CYII=");
 }
 
 @media (max-width: 768px) {
@@ -64,10 +65,26 @@
 }
 
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   font-size: 16px;
   overflow-x: hidden;
+}
+
+/* Lenis Smooth Scroll CSS */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
@@ -201,10 +218,10 @@ body::before {
   height: 100%;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  background-image: var(--noise-pattern);
   background-repeat: repeat;
-  background-size: 256px 256px;
+  background-size: 50px 50px;
 }
 
 /* ============================================

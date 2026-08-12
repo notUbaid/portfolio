@@ -134,22 +134,27 @@ const jsonLd = {
 };
 
 import { AdaptiveNav } from "@/components/ui/AdaptiveNav";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import CommandPalette from "@/components/ui/CommandPalette";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceMono.variable} ${caveat.variable} ${handmadeAlphabet.variable} ${amanojaku.variable}`}>
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <AdaptiveNav />
-        <ConsoleArt />
-        {children}
-        <PhysicsCat />
-        <ChalkTrail />
-        <PassiveAggressiveToast />
-        <Analytics />
+        <SmoothScroll>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <AdaptiveNav />
+          <ConsoleArt />
+          {children}
+          <PhysicsCat />
+          <ChalkTrail />
+          <PassiveAggressiveToast />
+          <CommandPalette />
+          <Analytics />
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -15,7 +15,7 @@ function FloatingShape({ delay, size, x, y, color }) {
         height: size,
         left: x,
         top: y,
-        background: color,
+        background: `radial-gradient(circle, ${color} 0%, rgba(0,0,0,0) 70%)`,
       }}
       animate={{
         y: [0, -20, 0],
@@ -72,66 +72,66 @@ function NameChar({ char, i }) {
   );
 }
 
+function getRandomTagline() {
+  const hour = new Date().getHours();
+  const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  const nightQuotes = [
+    `It's ${timeStr}. Nothing good gets deployed after midnight. You should know this.`,
+    `It's ${timeStr}. If you're reading this, either your servers are down or your life is.`,
+    `Why are you looking at my portfolio at ${timeStr}? Go to sleep. I'm not fixing your bugs.`,
+    `It's ${timeStr}. The only things awake are you, me, and that one memory leak you ignored.`,
+    `If you hire me at ${timeStr}, just know I bill double for insomnia.`
+  ];
+
+  const earlyMorningQuotes = [
+    `It's ${timeStr}. You're either a tech lead with a cold plunge routine or a junior in a crisis.`,
+    `I respect the ${timeStr} hustle, but please tell me you've slept.`,
+    `Waking up at ${timeStr} to look at portfolios is a cry for help.`,
+    `It's ${timeStr}. The sun isn't even up. My code barely is.`,
+    `If you're making hiring decisions at ${timeStr}, please drink some water first.`
+  ];
+
+  const morningQuotes = [
+    `Ah, ${timeStr}. The optimal time to write code you'll hate by 3 PM.`,
+    `Good morning. I hope your coffee is stronger than your production environment.`,
+    `It's ${timeStr}. Time to pretend we know what Agile means.`,
+    `Morning. Let's look at my projects before the daily standup drains our will to live.`,
+    `It's ${timeStr}. You have exactly 8 hours to figure out why the pipeline is failing.`
+  ];
+
+  const afternoonQuotes = [
+    `It's ${timeStr}. You should probably be working instead of looking at my portfolio. I won't tell.`,
+    `Post-lunch productivity slump? Welcome to my portfolio.`,
+    `It's ${timeStr}. Statistically, this is when most people break production.`,
+    `Looking at my portfolio at ${timeStr}? I appreciate the procrastination.`,
+    `It's ${timeStr}. You have exactly 3 hours to pretend you got things done today.`
+  ];
+
+  const eveningQuotes = [
+    `It's ${timeStr}. Production is frozen. Put the keyboard down.`,
+    `Working late? Let's just blame it on DNS and go home.`,
+    `It's ${timeStr}. The optimal hour for questioning your career choices.`,
+    `If you're still working at ${timeStr}, hire me so I can do it faster for you.`,
+    `Evening. The perfect time to deploy on a Friday and immediately regret it.`
+  ];
+
+  if (hour >= 0 && hour < 4) return getRandom(nightQuotes);
+  if (hour >= 4 && hour < 7) return getRandom(earlyMorningQuotes);
+  if (hour >= 7 && hour < 12) return getRandom(morningQuotes);
+  if (hour >= 12 && hour < 17) return getRandom(afternoonQuotes);
+  return getRandom(eveningQuotes);
+}
+
 export default function Hero() {
   const [tagline, setTagline] = useState(hero.tagline);
 
   useEffect(() => {
-    const hour = new Date().getHours();
-    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-    const nightQuotes = [
-      `It's ${timeStr}. Nothing good gets deployed after midnight. You should know this.`,
-      `It's ${timeStr}. If you're reading this, either your servers are down or your life is.`,
-      `Why are you looking at my portfolio at ${timeStr}? Go to sleep. I'm not fixing your bugs.`,
-      `It's ${timeStr}. The only things awake are you, me, and that one memory leak you ignored.`,
-      `If you hire me at ${timeStr}, just know I bill double for insomnia.`
-    ];
-
-    const earlyMorningQuotes = [
-      `It's ${timeStr}. You're either a tech lead with a cold plunge routine or a junior in a crisis.`,
-      `I respect the ${timeStr} hustle, but please tell me you've slept.`,
-      `Waking up at ${timeStr} to look at portfolios is a cry for help.`,
-      `It's ${timeStr}. The sun isn't even up. My code barely is.`,
-      `If you're making hiring decisions at ${timeStr}, please drink some water first.`
-    ];
-
-    const morningQuotes = [
-      `Ah, ${timeStr}. The optimal time to write code you'll hate by 3 PM.`,
-      `Good morning. I hope your coffee is stronger than your production environment.`,
-      `It's ${timeStr}. Time to pretend we know what Agile means.`,
-      `Morning. Let's look at my projects before the daily standup drains our will to live.`,
-      `It's ${timeStr}. You have exactly 8 hours to figure out why the pipeline is failing.`
-    ];
-
-    const afternoonQuotes = [
-      `It's ${timeStr}. You should probably be working instead of looking at my portfolio. I won't tell.`,
-      `Post-lunch productivity slump? Welcome to my portfolio.`,
-      `It's ${timeStr}. Statistically, this is when most people break production.`,
-      `Looking at my portfolio at ${timeStr}? I appreciate the procrastination.`,
-      `It's ${timeStr}. You have exactly 3 hours to pretend you got things done today.`
-    ];
-
-    const eveningQuotes = [
-      `It's ${timeStr}. Production is frozen. Put the keyboard down.`,
-      `Working late? Let's just blame it on DNS and go home.`,
-      `It's ${timeStr}. The optimal hour for questioning your career choices.`,
-      `If you're still working at ${timeStr}, hire me so I can do it faster for you.`,
-      `Evening. The perfect time to deploy on a Friday and immediately regret it.`
-    ];
-
-    if (hour >= 0 && hour < 4) {
-      setTagline(getRandom(nightQuotes));
-    } else if (hour >= 4 && hour < 7) {
-      setTagline(getRandom(earlyMorningQuotes));
-    } else if (hour >= 7 && hour < 12) {
-      setTagline(getRandom(morningQuotes));
-    } else if (hour >= 12 && hour < 17) {
-      setTagline(getRandom(afternoonQuotes));
-    } else if (hour >= 17 && hour < 24) {
-      setTagline(getRandom(eveningQuotes));
-    }
+    const id = requestAnimationFrame(() => {
+      setTagline(getRandomTagline());
+    });
+    return () => cancelAnimationFrame(id);
   }, []);
 
   return (
@@ -223,6 +223,8 @@ const roleWittyTexts = {
   "competitive hackathon participant": "goes for free food and memories"
 };
 
+import Magnetic from "@/components/ui/Magnetic";
+
 function RolePill({ role, i }) {
   const { pillRef, isFallen, handleClick } = usePhysicsPill(styles.fallen);
 
@@ -233,27 +235,29 @@ function RolePill({ role, i }) {
         style={{ 
           opacity: isFallen ? 1 : 0, 
           transition: "opacity 0.5s ease-in-out",
-          transitionDelay: "0.2s" // Wait slightly before showing
+          transitionDelay: "0.2s"
         }}
       >
         {roleWittyTexts[role.toLowerCase()] || "just pretending"}
       </span>
       
-      <motion.span
-        ref={pillRef}
-        className={`${styles.rolePill} ${isFallen ? styles.fallen : ''}`}
-        data-text={role}
-        onClick={handleClick}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={isFallen ? undefined : { opacity: 1, scale: 1, y: 0, rotate: 0, x: 0 }}
-        transition={isFallen ? undefined : { duration: 0.3, delay: 1.0 + i * 0.1 }}
-        style={{ 
-          cursor: isFallen ? 'default' : 'pointer', 
-          zIndex: isFallen ? 50 : 2 
-        }}
-      >
-        {role}
-      </motion.span>
+      <Magnetic strength={0.25}>
+        <motion.span
+          ref={pillRef}
+          className={`${styles.rolePill} ${isFallen ? styles.fallen : ''}`}
+          data-text={role}
+          onClick={handleClick}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={isFallen ? undefined : { opacity: 1, scale: 1, y: 0, rotate: 0, x: 0 }}
+          transition={isFallen ? undefined : { duration: 0.3, delay: 1.0 + i * 0.1 }}
+          style={{ 
+            cursor: isFallen ? 'default' : 'pointer', 
+            zIndex: isFallen ? 50 : 2 
+          }}
+        >
+          {role}
+        </motion.span>
+      </Magnetic>
     </div>
   );
 }

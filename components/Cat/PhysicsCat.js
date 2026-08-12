@@ -155,9 +155,19 @@ export default function PhysicsCat() {
       c.dir = Math.random() > 0.5 ? 1 : -1;
       c.t = 0; c.na = 0; c.life = 0; c.clip = CAT_H + 5; c.yOverride = null;
       c.breed = BREEDS[Math.floor(Math.random() * BREEDS.length)];
+
+      if (!rafRef.current) {
+        prevTs.current = 0;
+        rafRef.current = requestAnimationFrame(tick);
+      }
     };
 
     const tick = (now) => {
+      if (document.hidden) {
+        rafRef.current = requestAnimationFrame(tick);
+        return;
+      }
+
       if (!prevTs.current) prevTs.current = now;
       const dt = Math.min((now - prevTs.current) / 16.67, 3);
       prevTs.current = now;
@@ -390,30 +400,47 @@ export default function PhysicsCat() {
           break;
       }
 
-      setFrame(
-        c.state === S.HIDDEN || (!c.plat && c.state !== S.DRAGGED && c.state !== S.FALLING)
-          ? null
-          : { 
-              x: c.x, 
-              y: c.yOverride !== null ? c.yOverride - CAT_H : c.plat.t - CAT_H + c.clip, 
-              s: c.state, 
-              d: c.dir, 
-              cl: c.clip, 
-              breed: c.breed,
-              dragVx: c.dragVx
-            }
-      );
+      if (c.state === S.HIDDEN || (!c.plat && c.state !== S.DRAGGED && c.state !== S.FALLING)) {
+        setFrame(null);
+        rafRef.current = null;
+        return;
+      }
+
+      setFrame({ 
+        x: c.x, 
+        y: c.yOverride !== null ? c.yOverride - CAT_H : c.plat.t - CAT_H + c.clip, 
+        s: c.state, 
+        d: c.dir, 
+        cl: c.clip, 
+        breed: c.breed,
+        dragVx: c.dragVx
+      });
 
       rafRef.current = requestAnimationFrame(tick);
     };
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
+      } else {
+        if (!rafRef.current && C.current.state !== S.HIDDEN) {
+          prevTs.current = 0;
+          rafRef.current = requestAnimationFrame(tick);
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     timers.current.init = setTimeout(spawn, 1500);
-    rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
-      cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       clearTimers();
     };
   }, []);
