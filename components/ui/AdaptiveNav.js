@@ -15,28 +15,15 @@ const navItems = [
   { label: 'Contact', id: 'footer', href: '#footer' },
 ]
 
-import { toggleAudioMute, getAudioMuted, playClickSound } from "@/lib/audio"
+import { playClickSound } from "@/lib/audio"
 
 export const AdaptiveNav = () => {
   const [activeSection, setActiveSection] = useState('hero')
   const [clickedSection, setClickedSection] = useState(null)
   const [expanded, setExpanded] = useState(false)
   const [hovering, setHovering] = useState(false)
-  const [isMuted, setIsMuted] = useState(() => typeof window !== "undefined" ? getAudioMuted() : false)
   const hoverTimeoutRef = useRef(null)
   const isMobile = useIsMobile()
-
-  const handleToggleSound = (e) => {
-    e.stopPropagation()
-    const muted = toggleAudioMute()
-    setIsMuted(muted)
-  }
-
-  const handleOpenCmdK = (e) => {
-    e.stopPropagation()
-    playClickSound()
-    window.dispatchEvent(new CustomEvent("open-cmd-palette"))
-  }
 
   // Approximate width for 8 items is ~680px, collapsed width is 110px
   const pillWidth = useSpring(110, { stiffness: 220, damping: 25, mass: 1 })
@@ -203,23 +190,6 @@ export const AdaptiveNav = () => {
           )}
         </div>
       </motion.nav>
-
-      <div className={styles.navTools}>
-        <button
-          onClick={handleOpenCmdK}
-          className={styles.cmdBtn}
-          title="Command Palette (Cmd + K)"
-        >
-          ⌘K
-        </button>
-        <button
-          onClick={handleToggleSound}
-          className={styles.soundBtn}
-          title={isMuted ? "Unmute Sound" : "Mute Sound"}
-        >
-          {isMuted ? "🔇" : "🔊"}
-        </button>
-      </div>
     </div>
   )
 }
