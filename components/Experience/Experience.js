@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import styles from "./Experience.module.css";
 import { experience } from "@/data/content";
+import TextScramble from "@/components/ui/TextScramble";
 
 export default function Experience() {
   return (
@@ -16,7 +17,7 @@ export default function Experience() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          the <span style={{ color: "var(--accent)" }}>résumé</span> larp
+          <TextScramble text="the" /> <TextScramble text="résumé" style={{ color: "var(--accent)" }} /> <TextScramble text="larp" />
         </motion.h2>
 
         <div className={styles.timeline}>

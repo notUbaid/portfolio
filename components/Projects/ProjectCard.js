@@ -59,9 +59,7 @@ export default function ProjectCard({ project, index }) {
         </div>
       </div>
 
-      <h3 className={styles.cardTitle}>
-        <TextScramble text={project.name} />
-      </h3>
+      <h3 className={styles.cardTitle}>{project.name}</h3>
       <p className={styles.cardTagline}>{project.tagline}</p>
       <p className={styles.cardDescription}>
         {isBlackboard && project.wittyDescription ? project.wittyDescription : project.description}

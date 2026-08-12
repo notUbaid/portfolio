@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import styles from "./Projects.module.css";
 import { projects } from "@/data/content";
 import ProjectCard from "./ProjectCard";
+import TextScramble from "@/components/ui/TextScramble";
 
 export default function Projects() {
   return (
@@ -17,7 +18,7 @@ export default function Projects() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          things i&apos;ve <span style={{ color: "var(--accent)" }}>shipped</span>
+          <TextScramble text="things i've" /> <TextScramble text="shipped" style={{ color: "var(--accent)" }} />
         </motion.h2>
 
         <div className={styles.grid}>

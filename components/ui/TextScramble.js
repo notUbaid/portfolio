@@ -9,13 +9,16 @@ export default function TextScramble({
   text,
   as: Component = "span",
   className = "",
-  speed = 40,
+  speed = 35,
   triggerOnHover = true,
+  triggerInView = true,
+  style = {},
   ...props
 }) {
   const [displayText, setDisplayText] = useState(text);
   const isAnimating = useRef(false);
   const frameRef = useRef(null);
+  const elementRef = useRef(null);
 
   const scramble = useCallback(() => {
     if (isAnimating.current) return;
@@ -52,6 +55,20 @@ export default function TextScramble({
   }, [text, speed]);
 
   useEffect(() => {
+    if (!triggerInView || !elementRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          scramble();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(elementRef.current);
+    return () => observer.disconnect();
+  }, [triggerInView, scramble]);
+
+  useEffect(() => {
     return () => {
       if (frameRef.current) clearTimeout(frameRef.current);
     };
@@ -59,7 +76,9 @@ export default function TextScramble({
 
   return (
     <Component
+      ref={elementRef}
       className={className}
+      style={{ cursor: triggerOnHover ? "pointer" : "default", ...style }}
       onMouseEnter={triggerOnHover ? scramble : undefined}
       {...props}
     >

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import styles from "./ClientWork.module.css";
 import { clientWork } from "@/data/content";
+import TextScramble from "@/components/ui/TextScramble";
 
 export default function ClientWork() {
   return (
@@ -17,7 +18,7 @@ export default function ClientWork() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          stuff clients <span style={{ color: "var(--accent)" }}>paid</span> me for
+          <TextScramble text="stuff clients" /> <TextScramble text="paid" style={{ color: "var(--accent)" }} /> <TextScramble text="me for" />
         </motion.h2>
 
         <motion.p

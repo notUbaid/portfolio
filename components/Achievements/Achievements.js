@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import styles from "./Achievements.module.css";
 import { achievements } from "@/data/content";
+import TextScramble from "@/components/ui/TextScramble";
 
 export default function Achievements() {
   return (
@@ -16,7 +17,7 @@ export default function Achievements() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          the <span style={{ color: "var(--accent)" }}>trophy</span> case
+          <TextScramble text="the" /> <TextScramble text="trophy" style={{ color: "var(--accent)" }} /> <TextScramble text="case" />
         </motion.h2>
 
         <motion.p

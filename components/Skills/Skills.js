@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import styles from "./Skills.module.css";
 import { skills } from "@/data/content";
 import { usePhysicsPill } from "@/lib/physics";
+import TextScramble from "@/components/ui/TextScramble";
 
 export default function Skills() {
   return (
@@ -18,7 +19,7 @@ export default function Skills() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          things i can <span style={{ color: "var(--accent)" }}>actually</span> do
+          <TextScramble text="things i can" /> <TextScramble text="actually" style={{ color: "var(--accent)" }} /> <TextScramble text="do" />
         </motion.h2>
 
         <div className={styles.categories}>

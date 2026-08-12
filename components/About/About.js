@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import styles from "./About.module.css";
 import { about } from "@/data/content";
 
+import TextScramble from "@/components/ui/TextScramble";
+
 export default function About() {
   return (
     <section className={styles.about} id="about">
@@ -15,7 +17,7 @@ export default function About() {
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
         >
-          the <span style={{ color: "var(--accent)" }}>lore</span>
+          <TextScramble text="the" /> <TextScramble text="lore" style={{ color: "var(--accent)" }} />
         </motion.h2>
 
         <div className={styles.aboutLayout}>
