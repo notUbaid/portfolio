@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { playClickSound } from "@/lib/audio";
+import { playScrambleSound } from "@/lib/audio";
 
 const CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -11,24 +11,40 @@ export default function TextScramble({
   className = "",
   speed = 35,
   triggerOnHover = true,
-  triggerInView = true,
   style = {},
   ...props
 }) {
   const [displayText, setDisplayText] = useState(text);
   const isAnimating = useRef(false);
   const frameRef = useRef(null);
-  const elementRef = useRef(null);
+  const isScrollingRef = useRef(false);
+  const scrollTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      isScrollingRef.current = true;
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 150);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
 
   const scramble = useCallback(() => {
-    if (isAnimating.current) return;
+    if (isAnimating.current || isScrollingRef.current) return;
     isAnimating.current = true;
-    playClickSound();
 
     let iteration = 0;
     const maxIterations = text.length * 3;
 
     const step = () => {
+      playScrambleSound();
       setDisplayText(
         text
           .split("")
@@ -55,31 +71,23 @@ export default function TextScramble({
   }, [text, speed]);
 
   useEffect(() => {
-    if (!triggerInView || !elementRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          scramble();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(elementRef.current);
-    return () => observer.disconnect();
-  }, [triggerInView, scramble]);
-
-  useEffect(() => {
     return () => {
       if (frameRef.current) clearTimeout(frameRef.current);
     };
   }, []);
 
+  const handleMouseEnter = () => {
+    if (triggerOnHover && !isScrollingRef.current) {
+      scramble();
+    }
+  };
+
   return (
     <Component
-      ref={elementRef}
       className={className}
       style={{ cursor: triggerOnHover ? "pointer" : "default", ...style }}
-      onMouseEnter={triggerOnHover ? scramble : undefined}
+      onMouseEnter={handleMouseEnter}
+      onMouseMove={handleMouseEnter}
       {...props}
     >
       {displayText}
