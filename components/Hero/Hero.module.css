@@ -188,11 +188,12 @@
 }
 
 .rolePill.fallen {
-  border-color: #888;
-  background-color: #1a1a1a;
-  background-image: var(--noise-pattern);
+  border: 1.5px dashed rgba(255, 255, 255, 0.45) !important;
+  border-radius: var(--radius-sm) !important;
+  background-color: #121212 !important;
+  background-image: var(--noise-pattern) !important;
   color: transparent !important;
-  border-style: dashed;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6) !important;
 }
 
 .rolePill.fallen::after {

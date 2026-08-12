@@ -47,9 +47,9 @@ export default function CommandPalette() {
 
   const dropAllPills = () => {
     const pills = document.querySelectorAll("[data-text]:not(.fallen)");
-    pills.forEach((p) => {
+    pills.forEach((p, idx) => {
       if (p instanceof HTMLElement && !p.classList.contains("fallen")) {
-        p.click();
+        setTimeout(() => p.click(), idx * 30);
       }
     });
   };
