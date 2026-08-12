@@ -6,6 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./PhysicsCat.module.css";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { playMeowSound, playPurrSound, playJumpSound } from "@/lib/audio";
 
 // ── Physics Constants ──
 const WALK_SPEED = 0.6;
@@ -83,6 +84,7 @@ function findJumpTarget(c, allPlats) {
 }
 
 const startJump = (c, target) => {
+  playJumpSound();
   c.state = S.JUMPING;
   c.t = 0;
   c.jumpTarget = target;
@@ -217,7 +219,11 @@ export default function PhysicsCat() {
 
         if (mDist < 40 && mouse.current.speed < 2) {
            c.hoverTime += dt;
-           if (c.hoverTime > 30 && c.state !== S.PURRING) { c.state = S.PURRING; c.t = 0; }
+           if (c.hoverTime > 30 && c.state !== S.PURRING) { 
+             c.state = S.PURRING; 
+             c.t = 0; 
+             playPurrSound(); 
+           }
         } else {
            c.hoverTime = 0;
         }
@@ -225,7 +231,12 @@ export default function PhysicsCat() {
         if (mDist < 120 && mouse.current.speed > 2 && mouse.current.speed < 15 && [S.IDLE, S.SITTING, S.PURRING].includes(c.state)) {
            if ((c.dir === 1 && relX > 0) || (c.dir === -1 && relX < 0)) {
              c.playTime += dt;
-             if (c.playTime > 20 && c.state !== S.PLAYING) { c.state = S.PLAYING; c.t = 0; c.na = 120 + Math.random() * 60; }
+             if (c.playTime > 20 && c.state !== S.PLAYING) { 
+               c.state = S.PLAYING; 
+               c.t = 0; 
+               c.na = 120 + Math.random() * 60; 
+               playMeowSound(); 
+             }
            } else {
              c.playTime = 0;
            }
