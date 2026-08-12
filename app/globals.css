@@ -45,19 +45,25 @@
 
 @media (min-width: 1600px) {
   :root {
-    --max-width: min(1650px, 90vw);
+    --max-width: min(1750px, 90vw);
   }
 }
 
-@media (min-width: 2100px) {
+@media (min-width: 2200px) {
   :root {
-    --max-width: min(2050px, 88vw);
+    --max-width: min(2400px, 88vw);
   }
 }
 
-@media (min-width: 2700px) {
+@media (min-width: 3200px) {
   :root {
-    --max-width: min(2500px, 85vw);
+    --max-width: min(3400px, 86vw);
+  }
+}
+
+@media (min-width: 4500px) {
+  :root {
+    --max-width: min(4800px, 84vw);
   }
 }
 
@@ -84,7 +90,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  font-size: 16px;
+  font-size: clamp(15px, 0.95vw + 4px, 26px);
   overflow-x: hidden;
 }
 

@@ -10,14 +10,22 @@
 
 .shapes {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
 }
 
 .memeBackground {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
   background-image: url('/meme.jpg');
   background-size: cover;
   background-position: center 30%;
