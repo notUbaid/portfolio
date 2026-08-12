@@ -42,6 +42,8 @@ export default function ClientWork() {
 }
 
 import { useMouseReveal } from "@/hooks/useMouseReveal";
+import TiltCard from "@/components/ui/TiltCard";
+import Magnetic from "@/components/ui/Magnetic";
 
 function ClientCard({ item, i }) {
   const { ref, isHovered } = useMouseReveal();
@@ -50,9 +52,11 @@ function ClientCard({ item, i }) {
     <>
       <div className={styles.cardTop}>
         <span className={styles.clientLabel}>Client Work</span>
-        <a href={item.live} target="_blank" rel="noopener noreferrer" className={styles.cardLink} aria-label="Visit live site">
-          <ExternalLink size={16} className={styles.linkIcon} />
-        </a>
+        <Magnetic strength={0.2}>
+          <a href={item.live} target="_blank" rel="noopener noreferrer" className={styles.cardLink} aria-label="Visit live site">
+            <ExternalLink size={16} className={styles.linkIcon} />
+          </a>
+        </Magnetic>
       </div>
       <h3 className={styles.cardTitle}>{item.name}</h3>
       <p className={styles.cardTagline}>
@@ -75,23 +79,25 @@ function ClientCard({ item, i }) {
 
   return (
     <div className={styles.cardWrapper}>
-      <motion.div
-        className={styles.card}
-        data-cat-target="true"
-        ref={ref}
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: i * 0.12 }}
-        viewport={{ once: true, margin: "-60px" }}
-      >
-        <div className={styles.normalLayer}>{renderContent(false)}</div>
-        <div
-          className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
-          aria-hidden="true"
+      <TiltCard maxTilt={8}>
+        <motion.div
+          className={styles.card}
+          data-cat-target="true"
+          ref={ref}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: i * 0.12 }}
+          viewport={{ once: true, margin: "-60px" }}
         >
-          {renderContent(true)}
-        </div>
-      </motion.div>
+          <div className={styles.normalLayer}>{renderContent(false)}</div>
+          <div
+            className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
+            aria-hidden="true"
+          >
+            {renderContent(true)}
+          </div>
+        </motion.div>
+      </TiltCard>
     </div>
   );
 }

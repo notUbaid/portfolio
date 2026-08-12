@@ -67,6 +67,7 @@ export default function Achievements() {
 }
 
 import { useMouseReveal } from "@/hooks/useMouseReveal";
+import TiltCard from "@/components/ui/TiltCard";
 
 function TrophyCard({ item, i }) {
   const { ref, isHovered } = useMouseReveal();
@@ -104,23 +105,25 @@ function TrophyCard({ item, i }) {
   );
 
   return (
-    <motion.div
-      className={styles.trophy}
-      data-cat-target="true"
-      ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.4, delay: i * 0.12 }}
-      viewport={{ once: true, margin: "-60px" }}
-    >
-      <div className={styles.normalLayer}>{renderContent(false)}</div>
-      <div
-        className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
-        aria-hidden="true"
+    <TiltCard maxTilt={8}>
+      <motion.div
+        className={styles.trophy}
+        data-cat-target="true"
+        ref={ref}
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.4, delay: i * 0.12 }}
+        viewport={{ once: true, margin: "-60px" }}
       >
-        {renderContent(true)}
-      </div>
-    </motion.div>
+        <div className={styles.normalLayer}>{renderContent(false)}</div>
+        <div
+          className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
+          aria-hidden="true"
+        >
+          {renderContent(true)}
+        </div>
+      </motion.div>
+    </TiltCard>
   );
 }
 

@@ -31,6 +31,7 @@ export default function Experience() {
 }
 
 import { useMouseReveal } from "@/hooks/useMouseReveal";
+import TiltCard from "@/components/ui/TiltCard";
 
 function ExperienceEntry({ item, i }) {
   const { ref, isHovered } = useMouseReveal();
@@ -69,15 +70,17 @@ function ExperienceEntry({ item, i }) {
       viewport={{ once: true, margin: "-60px" }}
     >
       <div className={styles.entryDot} />
-      <div className={styles.entryContentWrapper} ref={ref} data-cat-target="true">
-        <div className={styles.normalLayer}>{renderContent(false)}</div>
-        <div
-          className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
-          aria-hidden="true"
-        >
-          {renderContent(true)}
+      <TiltCard maxTilt={6}>
+        <div className={styles.entryContentWrapper} ref={ref} data-cat-target="true">
+          <div className={styles.normalLayer}>{renderContent(false)}</div>
+          <div
+            className={`${styles.blackboardLayer} ${isHovered ? styles.revealed : ''}`}
+            aria-hidden="true"
+          >
+            {renderContent(true)}
+          </div>
         </div>
-      </div>
+      </TiltCard>
     </motion.div>
   );
 }
