@@ -36,7 +36,7 @@
   --radius-md: 8px;
   --radius-lg: 16px;
 
-  --max-width: min(1320px, 92vw);
+  --max-width: min(1200px, 92vw);
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 400ms ease;
@@ -45,25 +45,19 @@
 
 @media (min-width: 1600px) {
   :root {
-    --max-width: min(1750px, 90vw);
+    --max-width: min(1400px, 90vw);
   }
 }
 
 @media (min-width: 2200px) {
   :root {
-    --max-width: min(2400px, 88vw);
+    --max-width: min(1650px, 88vw);
   }
 }
 
 @media (min-width: 3200px) {
   :root {
-    --max-width: min(3400px, 86vw);
-  }
-}
-
-@media (min-width: 4500px) {
-  :root {
-    --max-width: min(4800px, 84vw);
+    --max-width: min(2000px, 86vw);
   }
 }
 
@@ -90,7 +84,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  font-size: clamp(15px, 0.95vw + 4px, 26px);
+  font-size: 16px;
   overflow-x: hidden;
 }
 
