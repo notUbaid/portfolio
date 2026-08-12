@@ -4,8 +4,9 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-md);
-  padding-bottom: calc(var(--space-2xl) + 2rem);
+  padding-bottom: var(--space-xl);
   position: relative;
+  overflow: hidden;
 }
 
 .shapes {
@@ -62,12 +63,12 @@
 
 .name {
   font-family: var(--font-heading);
-  font-size: clamp(4rem, 14vw, 11rem);
+  font-size: clamp(2.8rem, 8vw, 6.5rem);
   font-weight: 700;
-  line-height: 0.9;
+  line-height: 0.95;
   color: var(--fg);
   letter-spacing: -0.04em;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
